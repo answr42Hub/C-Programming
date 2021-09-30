@@ -15,7 +15,6 @@ void create(struct ArrayStack* stack, int size) {
 	stack->size = size;
 	stack->pileIndex = 0;
 }
-//jaime les bananes
 
 //Liberation de la pile
 void destroy(struct ArrayStack* stack) {
