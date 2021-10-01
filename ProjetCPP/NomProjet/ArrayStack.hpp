@@ -1,10 +1,12 @@
+#include <cstdlib>
+
 // Pile statique
 template <typename T>
 class ArrayStack {
 private:
     T* array;
-    int maxSize;
-    int topIndex;
+    size_t maxSize;
+    size_t topIndex;
 
 public:    
     //Constructeur
@@ -36,7 +38,7 @@ public:
         return (topIndex) ? array[topIndex-1] : 0;
     }
 
-    int size() {
+    siz_t size() {
         return maxSize;
     }
 };
