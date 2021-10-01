@@ -34,7 +34,7 @@ public:
             topIndex--;
     } 
 
-    int top() {
+    T top() {
         return (topIndex) ? array[topIndex-1] : 0;
     }
 
