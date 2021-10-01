@@ -1,3 +1,4 @@
+// Pile statique
 template <typename T>
 class ArrayStack {
 private:

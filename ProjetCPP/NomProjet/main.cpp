@@ -7,7 +7,9 @@ int main() {
 	//ArrayStack*pPileA = new ArrayStack(5); //Nous avons le contôle quand la mémoire sera libérée
 	//delete pPileA; //Mémoire libérée
 
-	ArrayStack<int> pile(5);
+	ArrayStack<int> pileEntiers(5);
+	ArrayStack<char> pileCaracteres(10);
+	ArrayStack<double> pileReels(20);
 
 	return 0;
 }
