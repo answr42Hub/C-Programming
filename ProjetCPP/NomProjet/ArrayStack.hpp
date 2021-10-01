@@ -1,24 +1,25 @@
+template <typename T>
 class ArrayStack {
 private:
-    int* array;
+    T* array;
     int maxSize;
     int topIndex;
 
 public:    
     //Constructeur
     ArrayStack(int maxSize) {
-        array = new int[maxSize];
+        array = new T[maxSize];
         this->maxSize = maxSize;
         topIndex = 0;
     }
 
     //Destructeur
     ~ArrayStack() {
-        delete array;
+        delete[] array;
     }
 
     //Empiler la donnee sur la pile
-    void push(int data) {
+    void push(T data) {
         if(topIndex < maxSize) {
             array[topIndex++] = data;
         } 
