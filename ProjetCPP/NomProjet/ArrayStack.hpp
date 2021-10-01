@@ -1,5 +1,3 @@
-
-
 class ArrayStack {
 private:
     int* array;
