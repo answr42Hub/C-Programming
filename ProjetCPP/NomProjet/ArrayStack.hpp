@@ -9,14 +9,14 @@ private:
 public:    
     //Constructeur
     ArrayStack(int maxSize) {
-        array = malloc(maxSize*sizeof(int));
+        array = new int[maxSize];
         this->maxSize = maxSize;
         topIndex = 0;
     }
 
     //Destructeur
     ~ArrayStack() {
-        free(array);
+        delete array;
     }
 
     //Empiler la donnee sur la pile
