@@ -38,7 +38,7 @@ public:
         return (topIndex) ? array[topIndex-1] : 0;
     }
 
-    siz_t size() {
+    size_t size() {
         return maxSize;
     }
 };

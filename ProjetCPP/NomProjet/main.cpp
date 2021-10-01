@@ -1,4 +1,5 @@
 #include "ArrayStack.hpp"
+#include <cstdio>
 
 int main() {
 
@@ -10,6 +11,9 @@ int main() {
 	ArrayStack<int> pileEntiers(5);
 	ArrayStack<char> pileCaracteres(10);
 	ArrayStack<double> pileReels(20);
+
+	pileCaracteres.push('4');
+	printf("Pile char -­ Dessus: %c, compte: %lu­\n", pileCaracteres.top(), pileCaracteres.size());
 
 	return 0;
 }
