@@ -15,5 +15,5 @@ int main() {
 	pileCaracteres.push('4');
 	printf("Pile char -­ Dessus: %c, compte: %lu­\n", pileCaracteres.top(), pileCaracteres.size());
 
-	return 0;// go love
+	return 0;
 }
