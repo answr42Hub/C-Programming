@@ -20,7 +20,7 @@ int main() {
     file.push(35);
     file.push(99);
 
-    file.push(67);// ne push pas puisqu'il dépasse l'indexe
+    file.push(67);// ne push pas 67 puisqu'il dépasse la grosseur du tableau
 
     cout << "front : " << file.front() << ", back : " << file.back() << ", Compte : " << file.size() << endl;
 
