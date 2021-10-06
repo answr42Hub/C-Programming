@@ -20,8 +20,8 @@ public:
     }
 
     void push(T data) {
-        if(frontIndex < arrayLength) {
-            array[frontIndex = ++frontIndex % arrayLength] = data;
+        if(count < arrayLength) {
+            array[(frontIndex + count) % arrayLength] = data;
             count++;
         } 
     }
@@ -34,14 +34,14 @@ public:
     }
 
     T front() {
-        return (count) ? array[frontIndex-1] : 0;
+        return (count) ? array[frontIndex] : 0;
     }
 
     T back() {
-        return (count) ? array[(frontIndex + count) % arrayLength];
+        return (count) ? array[(frontIndex + count) % arrayLength - 1] : 0;
     }
 
     size_t size() {
         return count;
     }
-}
+};
