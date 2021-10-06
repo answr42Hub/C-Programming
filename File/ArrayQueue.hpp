@@ -20,10 +20,8 @@ public:
     }
 
     void push(T data) {
-        if(count < arrayLength) {
-            array[(frontIndex + count) % arrayLength] = data;
-            count++;
-        } 
+        if(count < arrayLength)
+            array[(frontIndex + count++) % arrayLength] = data;
     }
 
     void pop() {
