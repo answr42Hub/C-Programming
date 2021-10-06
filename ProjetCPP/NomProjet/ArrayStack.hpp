@@ -39,6 +39,6 @@ public:
     }
 
     size_t size() {
-        return maxSize;
+        return topIndex;
     }
 };
