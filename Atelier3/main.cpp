@@ -9,10 +9,20 @@ using namespace std;
 // Terme.
 // S'il s'agit d'un opérateur.
 bool isOperator(string term) {
-  if(term == "+" || term == "-" || term == "*" || term == "/" || term == "(" || term == ")" || term == "%") {
-    return true;
-  }
+  switch(term[0]) {
+
+    case '+':
+    case '-':
+    case '*':
+    case '/':
+    case '%':
+    case '(':
+    case ')':
+      return true;
+      break;
   
+  }
+
   return false;
 }
 
@@ -39,48 +49,32 @@ ArrayQueue<string>* infixToPostfix(ArrayQueue<string>* expression) {
   ArrayQueue<string>* postfix;
   postfix = new ArrayQueue<string>(25);
   
-  ArrayStack<string> pileOp(15);
+  ArrayStack<string>* pileOp = new ArrayStack<string>(15);
 
-  while(expression->size() > 0) {
+  while(expression->size()) {
     if(!isOperator(expression->front())) {
       postfix->push(expression->front());
       expression->pop();
     }
 
-    else if(pileOp.size() > 0){
-      switch (expression->front()[0]) {
-      case '-':
-        if(getPriority(expression->front()))
-        break;
-
-      case '+':
-        break;
-
-      case '*':
-        break;
-
-      case '/':
-        break;
-
-      case '%':
-        break;
-
-      case ')':
+    else { 
+      while(pileOp->size() && getPriority(expression->front()) < getPriority(pileOp->top())){
+        postfix->push(pileOp->top());
+        pileOp->pop();
       
-      default:
-        break;
       }
-        
-    }
+      pileOp->push(expression->front());
 
-    else 
-      pileOp.push(expression->front());
+      expression->pop();
+    }
     
+    // voir pour les parentheses************
+
   }
 
   return postfix;
 
-  delete[] expression, postfix;
+  delete[] expression, postfix, pileOp;
 }
 
 ///\brief Calcul du résultat d'un expression postfixe.
@@ -94,7 +88,7 @@ int postfixToResult(ArrayQueue<string>* expression) {
 ///\return Code de terminaison de programme.
 int main() {
   // TODO : Déclaration et instanciation d'une file.
-  ArrayQueue<string> fileExpr(25);
+  ArrayQueue<string>* fileExpr = new ArrayQueue<string>(25);
 
   string expr = "42+(5*10-6)-69*34";
   string num = "";
@@ -105,50 +99,52 @@ int main() {
       num += expr[i++];
     }
     if(num != "") {
-      fileExpr.push(num);
+      fileExpr->push(num);
       num = "";
     }
     
     switch(expr[i]) {
 
       case '(' :
-        fileExpr.push("(");
+        fileExpr->push("(");
 
       break;
 
       case ')' :
-        fileExpr.push(")");
+        fileExpr->push(")");
         
       break;
 
       case '+' :
-        fileExpr.push("+");
+        fileExpr->push("+");
         
       break;
 
       case '-' :
-        fileExpr.push("-");
+        fileExpr->push("-");
         
       break;
 
       case '/' :
-        fileExpr.push("/");
+        fileExpr->push("/");
         
       break;
 
       case '*' :
-        fileExpr.push("*");
+        fileExpr->push("*");
         
       break;
 
       case '%' :
-        fileExpr.push("%");
+        fileExpr->push("%");
         
       break;
 
       default :
       break;
     }
+
+    delete[] fileExpr;
       
   }
 
