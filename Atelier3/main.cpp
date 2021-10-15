@@ -5,11 +5,15 @@
 
 using namespace std;
 
-///\brief Déterminer s'il s'agit d'un opérateur.
-///\param term Terme.
-///\return S'il s'agit d'un opérateur.
+// Déterminer s'il s'agit d'un opérateur.
+// Terme.
+// S'il s'agit d'un opérateur.
 bool isOperator(string term) {
-  // TODO : Implémentation ...
+  if(term == "+" || term == "-" || term == "*" || term == "/" || term == "(" || term == ")" || term == "%") {
+    return true;
+  }
+  
+  return false;
 }
 
 ///\brief Obtention de la priorité d'un opérateur.
@@ -17,13 +21,66 @@ bool isOperator(string term) {
 ///\return Priorité de l'opérateur.
 unsigned char getPriority(string op) {
   // TODO : Implémentation ...
+  if(op == "(" || op == ")")
+    return '0';
+  if(op == "+" || op == "-")
+    return '1';
+  if(op == "/" || op == "*" || op == "%")
+    return '2';
+  return NULL;
+
 }
 
 ///\brief Transformation d'une expression infixe en expression postfixe.
 ///\param expression Expression infixe.
 ///\return Expression postfixe.
 ArrayQueue<string>* infixToPostfix(ArrayQueue<string>* expression) {
-  // TODO : Implémentation ...
+  expression = new ArrayQueue<string>(25);
+  ArrayQueue<string>* postfix;
+  postfix = new ArrayQueue<string>(25);
+  
+  ArrayStack<string> pileOp(15);
+
+  while(expression->size() > 0) {
+    if(!isOperator(expression->front())) {
+      postfix->push(expression->front());
+      expression->pop();
+    }
+
+    else if(pileOp.size() > 0){
+      switch (expression->front()[0]) {
+      case '-':
+        if(getPriority(expression->front()))
+        break;
+
+      case '+':
+        break;
+
+      case '*':
+        break;
+
+      case '/':
+        break;
+
+      case '%':
+        break;
+
+      case ')':
+      
+      default:
+        break;
+      }
+        
+    }
+
+    else 
+      pileOp.push(expression->front());
+    
+  }
+
+  return postfix;
+
+  delete[] expression, postfix;
 }
 
 ///\brief Calcul du résultat d'un expression postfixe.
@@ -39,58 +96,63 @@ int main() {
   // TODO : Déclaration et instanciation d'une file.
   ArrayQueue<string> fileExpr(25);
 
-  string expr = "2+(5*10-6)-69*2";
+  string expr = "42+(5*10-6)-69*34";
   string num = "";
-
+  
   // TODO : Enfilement des opérandes et des opérateurs d'un expression.
-  for(int i = 0; i < expr.length(); i++) {
-    if(expr[i] >= 48 && expr[i] <= 57) {
-      num += expr[i];
+  for(int i = 0; i < expr.length()-1; i++) {
+    while(expr[i] >= 48 && expr[i] <= 57) {
+      num += expr[i++];
     }
-    else {
+    if(num != "") {
       fileExpr.push(num);
       num = "";
-      fileExpr.push(to_string(expr[i]));
     }
-  }
+    
+    switch(expr[i]) {
 
-  cout << fileExpr.front() << endl;
-  cout << fileExpr.back() << endl;
+      case '(' :
+        fileExpr.push("(");
+
+      break;
+
+      case ')' :
+        fileExpr.push(")");
+        
+      break;
+
+      case '+' :
+        fileExpr.push("+");
+        
+      break;
+
+      case '-' :
+        fileExpr.push("-");
+        
+      break;
+
+      case '/' :
+        fileExpr.push("/");
+        
+      break;
+
+      case '*' :
+        fileExpr.push("*");
+        
+      break;
+
+      case '%' :
+        fileExpr.push("%");
+        
+      break;
+
+      default :
+      break;
+    }
+      
+  }
 
   // TODO : Appel des fonction pour transformer l'expression et calculer le résultat.
 
   return 0;
 }
-/*
-int main(int argc, char** argv) {
-  ArrayQueue<string> fileLue(25);
-
-  string infix = argv[1];
-
-  for(int i = 0; i < infix.length(); i++) {
-    if(infix[i] >= 48 && infix[i] <= 57) {
-      num += infix[i];
-    }
-    else {
-      fileLue.push(num);
-      num="";
-      fileLue.push(to_string(infix[i]));
-    }
-  }
-
-  
-  cout << fileLue.front() << endl;
-  cout << fileLue.back() << endl;
-    
-  
-
-    
-
-  // TODO : Enfilement des opérandes et des opérateurs de l'expression infixe.
-
-  // TODO : Appel des fonction pour transformer l'expression et calculer le résultat.
-
-  return 0;
-}
-
-*/

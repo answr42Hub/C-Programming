@@ -36,9 +36,9 @@ public:
     }
 
     T back() {
-        return (count) ? array[(frontIndex + count) % arrayLength - 1] : 0;
+        return (count) ? array[(frontIndex + count - 1) % arrayLength] : NULL;
     }
-
+    
     size_t size() {
         return count;
     }
