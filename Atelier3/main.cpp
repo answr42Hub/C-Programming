@@ -38,6 +38,7 @@ unsigned char getPriority(string op) {
       return 1;
     case '*' :
     case '/' :
+    case '%' :
       return 2;
   }
   return 0;
@@ -121,6 +122,10 @@ int postfixToResult(ArrayQueue<string>* expression) {
     
         case '/':
           operandePile->push(num1 / num2);
+          break;
+
+        case '%':
+          operandePile->push(num1 % num2);
           break;
 
         default:
