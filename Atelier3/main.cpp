@@ -172,20 +172,23 @@ int main(int argc, char **argv) {
     }
   }
 
+  //Affichage Infix
   cout << "Infix : " << expr << endl;
   cout << "Postfix : ";
   fileExpr = infixToPostfix(fileExpr);
   
+  //Enfilement du postfix "tempon" tout en affichant chaque element de l'expression postfix 
   while(fileExpr->size()) {
     cout << fileExpr->front();
     postfixExpr->push(fileExpr->front());
     fileExpr->pop();
   }
   
+  //Calcul et affichage du resultat
   cout << endl << "Evaluation : " << postfixToResult(postfixExpr) << endl;
 
-
-  // TODO : Appel des fonction pour transformer l'expression et calculer le résultat.
+  //Effacer la memoire de fileExpr
+  delete fileExpr;
 
   return 0;
 }
