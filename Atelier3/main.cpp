@@ -162,14 +162,12 @@ int main(int argc, char **argv) {
         fileExpr->push(s);
         break;
     }
-    
   }
 
   cout << "Infix : " << expr << endl;
   cout << "Postfix : ";
   fileExpr = infixToPostfix(fileExpr);
   
-
   while(fileExpr->size()) {
     cout << fileExpr->front();
     postfixExpr->push(fileExpr->front());
