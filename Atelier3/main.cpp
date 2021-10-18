@@ -28,141 +28,120 @@ bool isOperator(string term) {
 
 // Obtention de la priorité d'un opérateur.
 unsigned char getPriority(string op) {
+
   if(op == "(" || op == ")")
     return '0';
-  if(op == "+" || op == "-")
+  else if(op == "+" || op == "-")
     return '1';
-  if(op == "/" || op == "*" || op == "%")
+  else if(op == "/" || op == "*")
     return '2';
-  return 0;
+  else
+    return 0;
 }
 
 //Transformation d'une epression infixe a une expression postfixe
 ArrayQueue<string>* infixToPostfix(ArrayQueue<string>* expression) {
-  //Declaration et instantiation de la file postefix et instantiation de la file expression
-  expression = new ArrayQueue<string>(25);
-  ArrayQueue<string>* postfix;
-  postfix = new ArrayQueue<string>(25);
-  
-  //Declaration et instantiation de la pile
+
+  ArrayQueue<string>* postfix = new ArrayQueue<string>(25);
   ArrayStack<string>* pileOp = new ArrayStack<string>(15);
 
   while(expression->size()) {
     if(!isOperator(expression->front())) {
       postfix->push(expression->front());
-      expression->pop();
+    }
+
+    else if(expression->front() == "(") {
+      pileOp->push(expression->front());
     }
 
     else {
-
-      if(expression->front() == "(") {
-        pileOp->push(expression->front());
-        expression->pop();
-      }
-
-      else if(expression->front() == ")") {
+      if(expression->front() == ")") {
         while(pileOp->top() != "(") {
           postfix->push(pileOp->top());
           pileOp->pop();
         }
         pileOp->pop();
-        expression->pop();
-      }
-
-      while(pileOp->size() && getPriority(expression->front()) < getPriority(pileOp->top())){
-        postfix->push(pileOp->top());
-        pileOp->pop();
+      } 
       
+      else {
+        while(pileOp->size() && getPriority(expression->front()) <= getPriority(pileOp->top())){
+          postfix->push(pileOp->top());
+          pileOp->pop();
+        }
+        pileOp->push(expression->front());
       }
-      pileOp->push(expression->front());
-      expression->pop();
     }
     
+    expression->pop();
   }
-  delete[] expression, pileOp;
+
+  while(pileOp->size()) {
+    postfix->push(pileOp->top());
+    pileOp->pop();
+  }
+
+  delete expression, pileOp;
   return postfix;
 }
 
 // Calcul du résultat d'un expression postfixe.
 int postfixToResult(ArrayQueue<string>* expression) {
   
-  int result, num1, num2;
-  ArrayStack<string>* operandePile = new ArrayStack<string>(10);
+  int num1, num2;
+  ArrayStack<int>* operandePile = new ArrayStack<int>(10);
   
   while(expression->size()) {
 
     if(!isOperator(expression->front())) {
-      operandePile->push(expression->front());
-      expression->pop();
+      operandePile->push(stoi(expression->front()));
     }
 
     else {
+      num2 = operandePile->top();
+      operandePile->pop();
+      num1 = operandePile->top();
+      operandePile->pop();
+
       switch (expression->front()[0]) {
         case '+':
-          expression->pop();
-          num2 = stoi(operandePile->top());
-          operandePile->pop();
-          num1 = stoi(operandePile->top());
-          operandePile->pop();
-
-          result = num1 + num2;
-          operandePile->push(to_string(result));
+          operandePile->push(num1 + num2);
           break;
 
         case '-':
-          expression->pop();
-          num2 = stoi(operandePile->top());
-          operandePile->pop();
-          num1 = stoi(operandePile->top());
-          operandePile->pop();
-
-          result = num1 - num2;
-          operandePile->push(to_string(result));
+          operandePile->push(num1 - num2);
           break;
 
         case '*':
-          expression->pop();
-          num2 = stoi(operandePile->top());
-          operandePile->pop();
-          num1 = stoi(operandePile->top());
-          operandePile->pop();
-
-          result = num1 * num2;
-          operandePile->push(to_string(result));
+          operandePile->push(num1 * num2);
           break;
     
         case '/':
-          expression->pop();
-          num2 = stoi(operandePile->top());
-          operandePile->pop();
-          num1 = stoi(operandePile->top());
-          operandePile->pop();
-
-          result = num1 / num2;
-          operandePile->push(to_string(result));
+          operandePile->push(num1 / num2);
           break;
 
         default:
           break;
       }
     }
-    
+    expression->pop();
   }
 
-  delete[] expression;
-  return result;
+  delete expression;
+  return operandePile->top();
 }
 
 ///\brief Fonction principale.
 ///\return Code de terminaison de programme.
-int main() {
-  // TODO : Déclaration et instanciation d'une file.
+int main(int argc, char **argv) {
+  //Déclaration et instanciation d'une file.
   ArrayQueue<string>* fileExpr = new ArrayQueue<string>(25);
+  ArrayQueue<string>* postfixExpr = new ArrayQueue<string>(25);;
 
-  string expr = "42+(5*10-6)-9*4";
+  ////////////////////////////////////////////////////////////////
+  string expr = argv[1];
   string num = "";
   
-  // TODO : Enfilement des opérandes et des opérateurs d'un expression.
+  //Enfilement des opérandes et des opérateurs d'un expression.
   for(int i = 0; i < expr.length(); i++) {
     while(expr[i] >= 48 && expr[i] <= 57) {
       num += expr[i++];
@@ -182,20 +161,23 @@ int main() {
       case '%' :
         fileExpr->push(s);
         break;
-      default :
-       cout << "The expression entered is not valid" << endl;
-      break;
     }
     
   }
+
+  cout << "Infix : " << expr << endl;
+  cout << "Postfix : ";
+  fileExpr = infixToPostfix(fileExpr);
+  
+
   while(fileExpr->size()) {
     cout << fileExpr->front();
+    postfixExpr->push(fileExpr->front());
     fileExpr->pop();
   }
-  cout << endl;
+  
+  cout << endl << "Evaluation : " << postfixToResult(postfixExpr) << endl;
 
-
-  delete[] fileExpr;
 
   // TODO : Appel des fonction pour transformer l'expression et calculer le résultat.
 
