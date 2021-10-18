@@ -29,14 +29,18 @@ bool isOperator(string term) {
 // Obtention de la priorité d'un opérateur.
 unsigned char getPriority(string op) {
 
-  if(op == "(" || op == ")")
-    return '0';
-  else if(op == "+" || op == "-")
-    return '1';
-  else if(op == "/" || op == "*")
-    return '2';
-  else
-    return 0;
+  switch(op[0]) {
+    case '(' :
+    case ')' :
+      return 0;
+    case '+' :
+    case '-' :
+      return 1;
+    case '*' :
+    case '/' :
+      return 2;
+  }
+  return 0;
 }
 
 //Transformation d'une epression infixe a une expression postfixe
@@ -137,15 +141,14 @@ int main(int argc, char **argv) {
   ArrayQueue<string>* fileExpr = new ArrayQueue<string>(25);
   ArrayQueue<string>* postfixExpr = new ArrayQueue<string>(25);;
 
-  ////////////////////////////////////////////////////////////////
   string expr = argv[1];
   string num = "";
   
   //Enfilement des opérandes et des opérateurs d'un expression.
   for(int i = 0; i < expr.length(); i++) {
-    while(expr[i] >= 48 && expr[i] <= 57) {
+    while(expr[i] >= 48 && expr[i] <= 57) 
       num += expr[i++];
-    }
+    
     if(num != "") {
       fileExpr->push(num);
       num = "";
