@@ -139,8 +139,8 @@ int postfixToResult(ArrayQueue<string>* expression) {
   return operandePile->top();
 }
 
-///\brief Fonction principale.
-///\return Code de terminaison de programme.
+// Fonction principale.
+// return Code de terminaison de programme.
 int main(int argc, char **argv) {
   //Déclaration et instanciation d'une file.
   ArrayQueue<string>* fileExpr = new ArrayQueue<string>(25);
@@ -149,15 +149,18 @@ int main(int argc, char **argv) {
   string expr = argv[1];
   string num = "";
   
-  //Enfilement des opérandes et des opérateurs d'un expression.
+  //Enfilement des opérandes et des opérateurs d'une expression.
   for(int i = 0; i < expr.length(); i++) {
+    //Tant que c'est un nombre
     while(expr[i] >= 48 && expr[i] <= 57) 
       num += expr[i++];
     
+    //Si un nombre a ete detecte
     if(num != "") {
       fileExpr->push(num);
       num = "";
     }
+
     string s(1, expr[i]);
     switch(expr[i]) {
       case '(' :
