@@ -142,7 +142,7 @@ int postfixToResult(ArrayQueue<string>* expression) {
 // Fonction principale.
 // return Code de terminaison de programme.
 int main(int argc, char **argv) {
-  //Déclaration et instanciation d'une file.
+  //Déclaration et instanciation des files utilisees
   ArrayQueue<string>* fileExpr = new ArrayQueue<string>(25);
   ArrayQueue<string>* postfixExpr = new ArrayQueue<string>(25);;
 
