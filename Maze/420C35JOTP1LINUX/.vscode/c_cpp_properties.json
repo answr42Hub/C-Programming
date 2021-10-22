@@ -13,7 +13,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/usr/include/SDL2"
             ],
             "cStandard": "c17",
             "cppStandard": "c++17",
@@ -29,7 +30,7 @@
             "intelliSenseMode": "gcc-x64",
             "macFrameworkPath": [
                 "/Library/Frameworks/"
-            ]            
+            ]
         }
     ],
     "version": 4
