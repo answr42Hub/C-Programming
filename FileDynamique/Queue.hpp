@@ -14,14 +14,20 @@ public:
         count = 0;
     }
 
+    ~Queue() {
+        while(count) {
+            pop();
+        }
+    }
+
     void push(T data) {
         if(!last)
-            first = last = new SLNode<T>(data);
-        else {
-            last = last->next = new SLNode<T>(data);
-        }
+            first = last = new SLNode<T>(data, nullptr);
+        else 
+            last = last->next = new SLNode<T>(data, nullptr);
+         
         count++;
-    }
+   }
 
     void pop() {
         if(first) {
