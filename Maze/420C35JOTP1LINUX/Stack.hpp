@@ -1,5 +1,6 @@
 #include "SLNode.hpp"
 #include <cstdlib>
+#include <type_traits>
 
 template <typename T>
 class Stack {
@@ -30,8 +31,10 @@ public:
         if(first) {
             SLNode<T>* toDelete = first;
             first = first->next;
+            if constexpr (std::is_pointer<T>())
+                delete first->data;
             delete toDelete;
-
+            
             count--;
         }
     }
