@@ -18,10 +18,10 @@ private:
 	// Mets les dirrections possibles de la position actuelle dans le tableau dir
 	void getDir() {
 	
-		pos->dir[0] = (maze->getSquare(x, y-1) != Square::WALL);
-		pos->dir[1] = (maze->getSquare(x, y+1) != Square::WALL);
-		pos->dir[2] = (maze->getSquare(x+1, y) != Square::WALL);
-		pos->dir[3] = (maze->getSquare(x-1, y) != Square::WALL);
+		pos->dir[0] = (maze->getSquare(x, y-1) != Square::WALL);//NORD
+		pos->dir[1] = (maze->getSquare(x, y+1) != Square::WALL);//SUD
+		pos->dir[2] = (maze->getSquare(x+1, y) != Square::WALL);//EST
+		pos->dir[3] = (maze->getSquare(x-1, y) != Square::WALL);//OUEST
 	}
 
 	// Retourne 0 : Nord, 1 : SUD, 2 : EST, 3: OUEST
@@ -64,60 +64,64 @@ public:
 				}
 			}
 		}
-		pos = new Position(x, y);
-		getDir();
-		path->push(pos);
 	}
 
 	~MazeSolver() {
-		// TODO : Libérations.
+		// Libérations.
 		delete maze;
-		// TODO : Liberer la pile
 		delete path;
 	}
 
 	void onUpdate() {
-		// TODO : Avancer d'un pas.
+		// Avancer d'un pas.
 		unsigned char provWay;
-		switch(getWay()) {
-			case 0 :// NORD
-				path->top()->dir[0] = false;
-				y--;
-				provWay = 1;
-				break;
-			case 1 :// SUD
-				path->top()->dir[1] = false;
-				y++;
-				provWay = 2;
-				break;
-			case 2 :// EST
-				path->top()->dir[2] = false;
-				x++;
-				provWay = 3;
-				break;
-			case 3 :// OUEST
-				path->top()->dir[3] = false;
-				x--;
-				provWay = 0;
-				break;
-			default :
-				path->pop();
-		}
-		pos = new Position(x, y);
-		getDir();
-		pos->dir[provWay] = false;
+		if(path->size()) {
+			switch(getWay()) {
+				case 0 :// NORD
+					path->top()->dir[0] = false; //dans un coin dir : {FTFT}
+					y--;
+					provWay = 1;
+					break;
+				case 1 :// SUD
+					path->top()->dir[1] = false;
+					y++;
+					provWay = 0;
+					break;
+				case 2 :// EST
+					path->top()->dir[2] = false;
+					x++;
+					provWay = 3;
+					break;
+				case 3 :// OUEST
+					path->top()->dir[3] = false;
+					x--;
+					provWay = 2;
+					break;
+				default :
+					path->pop();
+			}
+			pos = new Position(x, y);
+			getDir();
+			pos->dir[provWay] = false;
 
-		path->push(pos);
+			path->push(pos);
+		}
+		else {
+			pos = new Position(x, y);
+			getDir();
+			path->push(pos);
+		}
 	}
+		
 
 	void onRefresh() {
-		// TODO : Afficher le labyrinthe.
+		// Afficher le labyrinthe.
 		for(int i = 0; i < 53; i++){
 			for(int j = 0; j < 53; j++) {
 				drawSquare(maze->getSquare(j, i), j, i);
 			}
 		}
-		// TODO : Afficher le chemin parcouru.
+		// Afficher le chemin parcouru.
 		drawSquare(Square::PATH, path->top()->x, path->top()->y);
 		if(maze->getSquare(path->top()->x, path->top()->y) == Square::EXIT)
 			exit(0);
