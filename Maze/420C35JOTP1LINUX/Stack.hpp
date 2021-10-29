@@ -31,8 +31,6 @@ public:
         if(first) {
             SLNode<T>* toDelete = first;
             first = first->next;
-            if constexpr (std::is_pointer<T>())
-                delete first->data;
             delete toDelete;
             
             count--;
