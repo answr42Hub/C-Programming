@@ -1,4 +1,5 @@
 #include "SLNode.hpp"
+#include <cstdlib>
 
 template <typename T>
 class Deque {
@@ -48,7 +49,7 @@ public:
                 last = nullptr;
             }
             count--;
-        } 
+        }
     }
     
     void pop_back() {
