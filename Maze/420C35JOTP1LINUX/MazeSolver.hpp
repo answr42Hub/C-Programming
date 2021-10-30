@@ -23,8 +23,8 @@ private:
 
 	// Retourne 0 : Nord, 1 : SUD, 2 : EST, 3: OUEST
 	unsigned char getWay() {
-		int count = 0;
-		for(int i = 0; i < 4; i++) {
+		unsigned char count = 0;
+		for(unsigned char i = 0; i < 4; i++) {
 			if(path->top()->dir[i])
 				count++;
 		}
@@ -32,7 +32,7 @@ private:
 		if(!count)
 			return 4;
 
-		if(count > 1) {
+		else if(count > 1) {
 			unsigned char randWay;
 			do
 				randWay = rand()%4;
@@ -40,7 +40,7 @@ private:
 			return randWay;
 		}
 		else {
-			for(int i = 0; i < 4; i++) {
+			for(unsigned char i = 0; i < 4; i++) {
 				if(path->top()->dir[i])
 					return i;
 			}
