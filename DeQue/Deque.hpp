@@ -13,7 +13,8 @@ public:
     }
 
     ~Deque() {
-
+        while(last)
+            pop_front();
     }
 
     void push_front(T data) {
@@ -41,18 +42,32 @@ public:
                 SLNode<T>* first = last->next;
                 last->next = first->next;
                 delete first;
-                count--;
             }
-            if(last == last->next){
+            else {
                 delete last;
                 last = nullptr;
-                count--;
             }
+            count--;
         } 
     }
     
     void pop_back() {
-        SLNode<T>* runner;
+        if(last) {
+            if(count > 1) {
+                SLNode<T>* first = last->next;
+                SLNode<T>* runner = last;
+                do
+                    runner = runner->next;
+                while (runner->next != last);
+                last = runner;
+                last->next = first;
+            }
+            else {
+                delete last;
+                last = nullptr;
+            }
+            count--;
+        }
     }
 
     T front() {
