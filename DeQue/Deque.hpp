@@ -22,17 +22,18 @@ public:
         if(last)
             last->next = new SLNode<T>(data, last->next);
         else {
-            last->next = new SLNode<T>(data);
+            last->next = last = new SLNode<T>(data);
         }
-
+        
         count++;
     }
 
     void push_back(T data) {
-        if(count)
+        if(last)
             last = last->next = new SLNode<T>(data, last->next);
         else
             last->next = last = new SLNode<T>(data);
+
         count++;
     }
 
