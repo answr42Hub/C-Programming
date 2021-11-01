@@ -14,7 +14,6 @@ private:
 
 	// Mets les dirrections possibles de la position actuelle dans le tableau dir
 	void getDir() {
-	
 		path->top()->dir[0] = (maze->getSquare(path->top()->x, path->top()->y-1) != Square::WALL);//NORD
 		path->top()->dir[1] = (maze->getSquare(path->top()->x, path->top()->y+1) != Square::WALL);//SUD
 		path->top()->dir[2] = (maze->getSquare(path->top()->x+1, path->top()->y) != Square::WALL);//EST
