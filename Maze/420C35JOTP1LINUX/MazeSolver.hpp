@@ -1,6 +1,9 @@
 #ifndef MAZESOLVER_HPP
 #define MAZESOLVER_HPP
 
+#include <chrono>
+#include <thread>
+
 #include "Maze.hpp"
 #include "Window.hpp"
 #include "Position.hpp"
@@ -107,6 +110,8 @@ public:
 		}
 		getDir();
 		path->top()->dir[provWay] = false;
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 		
 	}
 		
