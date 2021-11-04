@@ -1,14 +1,15 @@
 #ifndef MAZESOLVER_HPP
 #define MAZESOLVER_HPP
 
-#include <chrono>
-#include <thread>
-
 #include "Maze.hpp"
 #include "Window.hpp"
 #include "Position.hpp"
 #include "Stack.hpp"
-// TODO : Inclusions.
+
+#define NORTH 0
+#define SOUTH 1
+#define EAST 2
+#define WEST 3
 
 class MazeSolver : public Window {
 private:
@@ -17,10 +18,10 @@ private:
 
 	// Mets les dirrections possibles de la position actuelle dans le tableau dir
 	void getDir() {
-		path->top()->dir[0] = (maze->getSquare(path->top()->x, path->top()->y-1) != Square::WALL);//NORD
-		path->top()->dir[1] = (maze->getSquare(path->top()->x, path->top()->y+1) != Square::WALL);//SUD
-		path->top()->dir[2] = (maze->getSquare(path->top()->x+1, path->top()->y) != Square::WALL);//EST
-		path->top()->dir[3] = (maze->getSquare(path->top()->x-1, path->top()->y) != Square::WALL);//OUEST
+		path->top()->dir[NORTH] = (maze->getSquare(path->top()->x, path->top()->y-1) != Square::WALL);//NORD
+		path->top()->dir[SOUTH] = (maze->getSquare(path->top()->x, path->top()->y+1) != Square::WALL);//SUD
+		path->top()->dir[EAST] = (maze->getSquare(path->top()->x+1, path->top()->y) != Square::WALL);//EST
+		path->top()->dir[WEST] = (maze->getSquare(path->top()->x-1, path->top()->y) != Square::WALL);//OUEST
 	}
 
 	// Retourne 0 : Nord, 1 : SUD, 2 : EST, 3: OUEST
@@ -78,30 +79,30 @@ public:
 	}
 
 	void onUpdate() {
-		if(maze->getSquare(path->top()->x, path->top()->y) == Square::EXIT)
+		if(!path->size()|| maze->getSquare(path->top()->x, path->top()->y) == Square::EXIT)
 			return;
 		// Avancer d'un pas.
 		unsigned char provWay;
 		switch(getWay()) {
-			case 0 :// NORD
-				path->top()->dir[0] = false;
+			case NORTH :// NORD
+				path->top()->dir[NORTH] = false;
 				path->push(new Position(path->top()->x, path->top()->y-1));
-				provWay = 1;
+				provWay = SOUTH;
 				break;
-			case 1 :// SUD
-				path->top()->dir[1] = false;
+			case SOUTH :// SUD
+				path->top()->dir[SOUTH] = false;
 				path->push(new Position(path->top()->x, path->top()->y+1));
-				provWay = 0;
+				provWay = NORTH;
 				break;
-			case 2 :// EST
-				path->top()->dir[2] = false;
+			case EAST :// EST
+				path->top()->dir[EAST] = false;
 				path->push(new Position(path->top()->x+1, path->top()->y));
-				provWay = 3;
+				provWay = WEST;
 				break;
-			case 3 :// OUEST
-				path->top()->dir[3] = false;
+			case WEST :// OUEST
+				path->top()->dir[WEST] = false;
 				path->push(new Position(path->top()->x-1, path->top()->y));
-				provWay = 2;
+				provWay = EAST;
 				break;
 			default :
 				delete path->top();
@@ -111,11 +112,8 @@ public:
 		getDir();
 		path->top()->dir[provWay] = false;
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 		
 	}
-		
-
 	void onRefresh() {
 		// Afficher le labyrinthe.
 		for(int i = 0; i < 53; i++){
@@ -125,6 +123,7 @@ public:
 		}
 		// Afficher le chemin parcouru.
 		drawSquare(Square::PATH, path->top()->x, path->top()->y);
+		SDL_Delay(10);
 	}
 };
 

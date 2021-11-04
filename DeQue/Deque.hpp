@@ -56,13 +56,11 @@ public:
     void pop_back() {
         if(last) {
             if(count > 1) {
-                SLNode<T>* first = last->next;
                 SLNode<T>* runner = last;
-                do
-                    runner = runner->next;
-                while (runner->next != last);
-                last = runner;
-                last->next = first;
+                while (runner->next != last)
+                    last = last->next;
+                last->next = runner->next;
+                delete runner;
             }
             else {
                 delete last;
