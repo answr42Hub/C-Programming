@@ -3,18 +3,36 @@
 
 using namespace std;
 
+enum Traversal { Prefix, Infix, Postfix };
+
 template <typename T>
 class BSTree {
 private:
     DLNode<T>* root;
     size_t count;
 
-    queue<T>* infixTraversal(DLNode<T>* node, queue<T>* traversalQueue) {
+    void prefixTraversal(DLNode<T>* node, queue<T>* traversalQueue) {
+        traversalQueue->push(node->data);
         if (node->left)
-            infixTraversal(node->left);
+            prefixTraversal(node->left, traversalQueue);
+        if(node->right)
+            prefixTraversal(node->right, traversalQueue);
+    }
+
+    void infixTraversal(DLNode<T>* node, queue<T>* traversalQueue) {
+        if (node->left)
+            infixTraversal(node->left, traversalQueue);
         traversalQueue->push(node->data);
         if(node->right)
             infixTraversal(node->right, traversalQueue);
+    }
+
+    void postfixTraversal(DLNode<T>* node, queue<T>* traversalQueue) {
+        if (node->left)
+            postfixTraversal(node->left, traversalQueue);
+        if(node->right)
+            postfixTraversal(node->right, traversalQueue);
+        traversalQueue->push(node->data);
     }
 
 public:
@@ -37,7 +55,7 @@ public:
                     }
                 }
                 else if(data > runner->data) {
-                    if(nunner->right)
+                    if(runner->right)
                         runner = runner->right;
                     else {
                         runner->right = new DLNode<T>(data);
@@ -49,8 +67,10 @@ public:
                     runner = nullptr;
             }
         }
-        else
+        else {
             root = new DLNode<T>(data);
+            count++;
+        }
     }
 
     bool search(T data) {
@@ -68,12 +88,23 @@ public:
         }
     }
 
-    queue<T> infixTraversal() {
+    queue<T>* traversal(Traversal type) {
         
         queue<T>* traversalQueue = new queue<T>();
         
-        if(root)
-            infixTraversal(root, traversalQueue);
+        if(root) {
+            switch (type) {
+            case Traversal::Prefix:
+                prefixTraversal(root, traversalQueue);
+                break;
+            case Traversal::Infix:
+                infixTraversal(root, traversalQueue);
+                break;
+            case Traversal::Postfix:
+                postfixTraversal(root, traversalQueue);
+                break;
+            }
+        }
         return traversalQueue;
     }
 
