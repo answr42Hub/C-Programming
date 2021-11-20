@@ -73,8 +73,22 @@ public:
         }
     }
 
-    void remove {
-        
+    void remove() {
+        DLNode<T>* parent = root;
+        //Positionner le pointeur "parent"
+
+        DLNode<T>* toDelete = root->right;
+        //positionner le toDelete selon la disposition du parent
+
+        if(!toDelete->left && !toDelete->right) {
+            //Le noeud a retirer est une feuille
+        }
+        else if(toDelete->left && toDelete->right) {
+            //Le noeud a retirer a deux enfants
+        }
+        else {
+            //Le noeud a retirer a 1 enfant
+        }
     }
 
     bool search(T data) {
