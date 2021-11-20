@@ -73,6 +73,10 @@ public:
         }
     }
 
+    void remove {
+        
+    }
+
     bool search(T data) {
         if(root) {
             DLNode<T>* runner = root;
