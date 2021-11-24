@@ -42,10 +42,12 @@ void onMenuClick(const unsigned int& menuItem) {
 	switch (menuItem) {
 	case Menu::NEW_FOLDER:
 		// TODO : Créer un nouveau dossier dans le dossier actuel
+		Window::showTextField();
 		break;
 
 	case Menu::NEW_NOTE:
 		// TODO : Créer une nouvelle note dans le dossier actuel
+		Window::setTitle("Nouveau Titre");
 		break;
 
 	case Menu::RENAME:
