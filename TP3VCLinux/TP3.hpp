@@ -1,4 +1,4 @@
-#include <stack>
+#include "Stack.hpp"
 #include <vector>
 #include <deque>
 //#include "BSTree.hpp"
@@ -8,7 +8,7 @@
 using namespace std;
 
 Folder* root;
-stack<Folder*>* path;
+Stack<Folder*>* path;
 //AVLTree<int>* selections;
 
 int getIndex(const int& x, const int& y) {

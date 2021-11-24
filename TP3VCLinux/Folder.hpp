@@ -11,5 +11,6 @@ private:
 	vector<Note*> notes;
 
 public:
-	// TODO : Implémentation des méthodes nécessaires
+	// TODO : Implï¿½mentation des mï¿½thodes nï¿½cessaires
+	
 };

@@ -1,3 +1,4 @@
+#pragma once
 #include "SLNode.hpp"
 #include <cstdlib>
 
