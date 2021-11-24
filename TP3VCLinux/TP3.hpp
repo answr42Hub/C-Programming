@@ -1,5 +1,6 @@
 #include <stack>
-#include <queue>
+#include <vector>
+#include <deque>
 //#include "BSTree.hpp"
 //#include "AVLTree"
 #include "Folder.hpp"
@@ -17,14 +18,11 @@ int getIndex(const int& x, const int& y) {
 
 void onInit() {
 	// TODO : Initialisations
+	Window::drawIcon(Icon::FOLDER, 0, 0, true);
+	Window::drawString("DOSSIER", 0, Window::getIconHeight());
 }
 
 void onRefresh() {
-	Window::drawIcon(Icon::FOLDER, 0, 0);
-	Window::drawString("DOSSIER", 0, Window::getIconHeight());
-	Window::drawIcon(Icon::NOTE, Window::getIconWidth(), 0);
-	Window::drawIcon(Icon::HUFFMAN, Window::getIconWidth()*2, 0);
-	
 	// TODO : Afficher le contenu du dossier actuel
 }
 
@@ -34,7 +32,11 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 	}
 	else {
 		// TODO : Afficher le menu
-		Window::showMenu(x, y, Menu::NEW_FOLDER | Menu::NEW_NOTE);
+
+		string nom = Window::showTextField("Nom Actuel");
+
+		//Window::showMenu(x, y, Menu::NEW_FOLDER | Menu::NEW_NOTE);
+
 	}
 }
 
