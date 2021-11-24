@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "g++ -ggdb -D_REENTRANT -I/usr/include/SDL2 -L./ -o 420C35JOTP3 main.cpp -l420C35JOTP3 -lSDL2_ttf -lSDL2_image -lSDL2",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
