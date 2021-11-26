@@ -8,5 +8,18 @@ private:
 	string content;
 
 public:
-	// TODO : Implémentation des méthodes nécessaires
+	// TODO : Implï¿½mentation des mï¿½thodes nï¿½cessaires
+	Note(string name, string content = "") {
+		this->name = name;
+		this->content = content;
+	}
+
+	//Obtenir le nom du fichier
+	string getName(){
+		return name;
+	}
+	//Obtenir le contenu du fichier
+	string getContent(){
+		return content;
+	}
 };

@@ -7,7 +7,6 @@
 
 using namespace std;
 
-Folder* root;
 Stack<Folder*>* path;
 //AVLTree<int>* selections;
 
@@ -18,12 +17,17 @@ int getIndex(const int& x, const int& y) {
 
 void onInit() {
 	// TODO : Initialisations
-	Window::drawIcon(Icon::FOLDER, 0, 0, true);
-	Window::drawString("DOSSIER", 0, Window::getIconHeight());
+	path = new Stack<Folder*>();
+	path->push(new Folder("/"));
+
+	path->top()->creatFolder("Dossier 1");
+
+
 }
 
 void onRefresh() {
 	// TODO : Afficher le contenu du dossier actuel
+	
 }
 
 void onWindowClick(const int& x, const int& y, const bool& button, const bool& ctrl) {
