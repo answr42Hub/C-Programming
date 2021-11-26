@@ -35,4 +35,12 @@ public:
 	Note* getNote(size_t index) {
 		return notes[index];
 	}
+	//Obtenir le nombre de sous-dossiers
+	size_t getFolderCount() {
+		return folders.size();
+	}
+	//Obtenir le nombre de notes
+	size_t getNoteCount() {
+		return notes.size();
+	}
 };

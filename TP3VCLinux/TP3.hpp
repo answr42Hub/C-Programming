@@ -21,13 +21,18 @@ void onInit() {
 	path->push(new Folder("/"));
 
 	path->top()->creatFolder("Dossier 1");
-
-
+	path->top()->creatFolder("Dossier 2");
+	path->top()->creatFolder("Dossier 3");
+	path->top()->creatFolder("Dossier 4");
+	path->top()->createNote("Note 1");
+	path->top()->createNote("Note 2");
+	path->top()->createNote("Note 3");
 }
 
 void onRefresh() {
 	// TODO : Afficher le contenu du dossier actuel
-	
+	Window::drawIcon(FOLDER, 0, 0);
+	Window::drawString(path->top()->getFolder(0)->getFolderName(), Window::getIconWidth(), Window::getIconHeight());
 }
 
 void onWindowClick(const int& x, const int& y, const bool& button, const bool& ctrl) {
