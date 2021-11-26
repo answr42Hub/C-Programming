@@ -27,12 +27,23 @@ void onInit() {
 	path->top()->createNote("Note 1");
 	path->top()->createNote("Note 2");
 	path->top()->createNote("Note 3");
+	
 }
 
 void onRefresh() {
 	// TODO : Afficher le contenu du dossier actuel
+	//Faire une boucle pour afficher tous les dossiers et notes selon la largeur de la fenaitre
+	int x = 0, y = 0;
+	string name;
+
+	for(int i = 0; i < path->top()->getFolderCount(); i++) {
+
+	}
+	for(int y = 0; y < path->top()->getNoteCount(); y++) {
+
+	}
 	Window::drawIcon(FOLDER, 0, 0);
-	Window::drawString(path->top()->getFolder(0)->getFolderName(), Window::getIconWidth(), Window::getIconHeight());
+	Window::drawString(path->top()->getFolder(0)->getFolderName(), ((Window::getIconWidth()) - (Window::getStringWidth(path->top()->getFolder(0)->getFolderName())))/2, Window::getIconHeight()-25);
 }
 
 void onWindowClick(const int& x, const int& y, const bool& button, const bool& ctrl) {
