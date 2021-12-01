@@ -20,20 +20,20 @@ void onInit() {
 	path = new Stack<Folder*>();
 	path->push(new Folder("/"));
 
-	path->top()->creatFolder("Dossier 1");
-	path->top()->creatFolder("Dossier 2");
-	path->top()->creatFolder("Dossier 3");
-	path->top()->creatFolder("Dossier 4");
+	path->top()->creatFolder("ZZtop");
+	path->top()->creatFolder("Alfredo");
+	path->top()->creatFolder("KindaCringe");
+	path->top()->creatFolder("AAAAAA 4");
 	path->top()->creatFolder("Dossier 5");
 	path->top()->creatFolder("Dossier 6");
-	path->top()->creatFolder("Dossier 7");
+	path->top()->creatFolder("FOLDERSS");
 	path->top()->creatFolder("Dossier 8");
-	path->top()->createNote("Note 1");
-	path->top()->createNote("Note 2");
-	path->top()->createNote("Note 3");
-	path->top()->createNote("Note 4");
 	path->top()->createNote("Note 5");
+	path->top()->createNote("Note 2");
 	path->top()->createNote("Note 6");
+	path->top()->createNote("Note 4");
+	path->top()->createNote("Note 1");
+	path->top()->createNote("Note 3");
 }
 
 void onRefresh() {
@@ -43,7 +43,7 @@ void onRefresh() {
 	string name;
 
 	for (int i = 0; i < path->top()->getFolderCount(); i++) {
-		if(x + Window::getIconWidth() > Window::getWidth()) {
+		if(x + Window::getIconWidth() >= Window::getWidth()) {
 			y+=Window::getIconHeight();
 			x=0;
 		}
@@ -56,7 +56,7 @@ void onRefresh() {
 	}
 
 	for (int j = 0; j < path->top()->getNoteCount(); j++) {
-		if(x + Window::getIconWidth() > Window::getWidth()) {
+		if(x + Window::getIconWidth() >= Window::getWidth()) {
 			y+=Window::getIconHeight();
 			x=0;
 		}

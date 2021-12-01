@@ -18,10 +18,12 @@ public:
 	//Creation d'un dossier
 	void creatFolder(string name) {
 		folders.push_back(new Folder(name));
+		quickSortFolders(0, folders.size()-1);
 	}
 	//Creation d'une note
 	void createNote(string name) {
 		notes.push_back(new Note(name));
+		quickSortNotes(0, notes.size()-1);
 	}
 	//Obtenir un dossier
 	Folder* getFolder(size_t index) {
