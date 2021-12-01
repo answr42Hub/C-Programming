@@ -43,4 +43,39 @@ public:
 	size_t getNoteCount() {
 		return notes.size();
 	}
+	//Trier les vecteurs Folder*
+	void quickSortFolders(int iMin, int iMax) {
+		int g = iMin, p = iMin, d = iMax;
+  
+  		while (g != d) {
+    		if (folders[g]->getFolderName() > folders[d]->getFolderName()) {
+      			swap(folders[g], folders[d]);
+      		p = g + d - p;
+    	}
+
+    	(p == g) ? d-- : g++;    
+  		}
+  
+  		if (iMin < p - 1) quickSortFolders(iMin, p - 1);
+  		if (iMax > p + 1) quickSortFolders(p + 1, iMax);  
+	}
+
+	//Trier les vecteurs Note*
+	void quickSortNotes(int iMin, int iMax) {
+		int g = iMin, p = iMin, d = iMax;
+  
+  		while (g != d) {
+    		if (notes[g]->getName() > notes[d]->getName()) {
+      			swap(notes[g], notes[d]);
+      		p = g + d - p;
+    	}
+
+    	(p == g) ? d-- : g++;    
+  		}
+  
+  		if (iMin < p - 1) quickSortNotes(iMin, p - 1);
+  		if (iMax > p + 1) quickSortNotes(p + 1, iMax);  
+	}
+
+
 };
