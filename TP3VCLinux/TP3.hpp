@@ -24,10 +24,16 @@ void onInit() {
 	path->top()->creatFolder("Dossier 2");
 	path->top()->creatFolder("Dossier 3");
 	path->top()->creatFolder("Dossier 4");
+	path->top()->creatFolder("Dossier 5");
+	path->top()->creatFolder("Dossier 6");
+	path->top()->creatFolder("Dossier 7");
+	path->top()->creatFolder("Dossier 8");
 	path->top()->createNote("Note 1");
 	path->top()->createNote("Note 2");
 	path->top()->createNote("Note 3");
-	
+	path->top()->createNote("Note 4");
+	path->top()->createNote("Note 5");
+	path->top()->createNote("Note 6");
 }
 
 void onRefresh() {
@@ -36,14 +42,31 @@ void onRefresh() {
 	int x = 0, y = 0;
 	string name;
 
-	for(int i = 0; i < path->top()->getFolderCount(); i++) {
+	for (int i = 0; i < path->top()->getFolderCount(); i++) {
+		if(x + Window::getIconWidth() > Window::getWidth()) {
+			y+=Window::getIconHeight();
+			x=0;
+		}
 
-	}
-	for(int y = 0; y < path->top()->getNoteCount(); y++) {
+		name = path->top()->getFolder(i)->getFolderName();
+		Window::drawIcon(FOLDER, x, y);
+		Window::drawString(name, (Window::getIconWidth() - Window::getStringWidth(name))/2 + x, (Window::getIconHeight() + y) - 25);
 
+		x+=Window::getIconWidth();
 	}
-	Window::drawIcon(FOLDER, 0, 0);
-	Window::drawString(path->top()->getFolder(0)->getFolderName(), ((Window::getIconWidth()) - (Window::getStringWidth(path->top()->getFolder(0)->getFolderName())))/2, Window::getIconHeight()-25);
+
+	for (int j = 0; j < path->top()->getNoteCount(); j++) {
+		if(x + Window::getIconWidth() > Window::getWidth()) {
+			y+=Window::getIconHeight();
+			x=0;
+		}
+
+		name = path->top()->getNote(j)->getName();
+		Window::drawIcon(NOTE, x, y);
+		Window::drawString(name, (Window::getIconWidth() - Window::getStringWidth(name))/2 + x, (Window::getIconHeight() + y) - 25);
+
+		x+=Window::getIconWidth();
+	}
 }
 
 void onWindowClick(const int& x, const int& y, const bool& button, const bool& ctrl) {
@@ -53,7 +76,7 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 	else {
 		// TODO : Afficher le menu
 
-		string nom = Window::showTextField("Nom Actuel");
+		//string nom = Window::showTextField("Nom Actuel");
 
 		//Window::showMenu(x, y, Menu::NEW_FOLDER | Menu::NEW_NOTE);
 
