@@ -22,7 +22,7 @@ void onInit() {
 
 	path->top()->creatFolder("ZZtop");
 	path->top()->creatFolder("Alfredo");
-	path->top()->creatFolder("KindaCringe");
+	path->top()->creatFolder("KindaCringeeeeeeeeeeeeeeee");
 	path->top()->creatFolder("AAAAAA 4");
 	path->top()->creatFolder("Dossier 5");
 	path->top()->creatFolder("Dossier 6");
@@ -30,12 +30,18 @@ void onInit() {
 	path->top()->creatFolder("Dossier 8");
 	path->top()->createNote("Note 5");
 	path->top()->createNote("Note 2");
-	path->top()->createNote("Note 6");
+	path->top()->createNote("Note 6666666666666666666");
 	path->top()->createNote("Note 4");
 	path->top()->createNote("Note 1");
 	path->top()->createNote("Note 3");
 }
-
+string trunkName(string name) {
+	while((Window::getStringWidth(name) + Window::getStringWidth("...")) > Window::getIconWidth()) {
+		name.pop_back();
+	}
+	name += "...";
+	return name;
+}
 void onRefresh() {
 	// TODO : Afficher le contenu du dossier actuel
 	//Faire une boucle pour afficher tous les dossiers et notes selon la largeur de la fenaitre
@@ -49,7 +55,13 @@ void onRefresh() {
 		}
 
 		name = path->top()->getFolder(i)->getFolderName();
+
+		if(Window::getStringWidth(name) > Window::getIconWidth()) {
+			name = trunkName(name);
+		}
+
 		Window::drawIcon(FOLDER, x, y);
+		
 		Window::drawString(name, (Window::getIconWidth() - Window::getStringWidth(name))/2 + x, (Window::getIconHeight() + y) - 25);
 
 		x+=Window::getIconWidth();
@@ -62,6 +74,11 @@ void onRefresh() {
 		}
 
 		name = path->top()->getNote(j)->getName();
+
+		if(Window::getStringWidth(name) > Window::getIconWidth()) {
+			name = trunkName(name);
+		}
+
 		Window::drawIcon(NOTE, x, y);
 		Window::drawString(name, (Window::getIconWidth() - Window::getStringWidth(name))/2 + x, (Window::getIconHeight() + y) - 25);
 
