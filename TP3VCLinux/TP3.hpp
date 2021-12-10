@@ -1,7 +1,7 @@
 #include "Stack.hpp"
 #include <vector>
 #include <deque>
-//#include "BSTree.hpp"
+#include "BSTree.hpp"
 //#include "AVLTree"
 #include "Folder.hpp"
 
@@ -12,13 +12,12 @@ Stack<Folder*>* path;
 
 int getIndex(const int& x, const int& y) {
 	// TODO : Retourner l'indice de l'élément clické
-	return -1;
+	return ((y/Window::getIconHeight())*(Window::getWidth()/Window::getIconWidth()) + x/Window::getIconWidth());
 }
 
 void onInit() {
 	// TODO : Initialisations
 	path = new Stack<Folder*>();
-	path->push(new Folder("/"));
 
 	path->top()->creatFolder("ZZtop");
 	path->top()->creatFolder("Alfredo");
@@ -34,7 +33,11 @@ void onInit() {
 	path->top()->createNote("Note 4");
 	path->top()->createNote("Note 1");
 	path->top()->createNote("Note 3");
+	path->top()->getFolder(0)->creatFolder("Hello !");
+	path->top()->getFolder(0)->createNote("Hello !note");
 }
+
+//Fonction retournant le nom du fichier tronqué
 string trunkName(string name) {
 	while((Window::getStringWidth(name) + Window::getStringWidth("...")) > Window::getIconWidth()) {
 		name.pop_back();
@@ -42,12 +45,19 @@ string trunkName(string name) {
 	name += "...";
 	return name;
 }
+
 void onRefresh() {
 	// TODO : Afficher le contenu du dossier actuel
-	//Faire une boucle pour afficher tous les dossiers et notes selon la largeur de la fenaitre
+	//Faire une boucle pour afficher tous les dossiers et notes selon la largeur de la fenetre
 	int x = 0, y = 0;
 	string name;
-
+	if(path->size() > 1) {
+		Window::drawIcon(FOLDER, x, y);
+		
+		Window::drawString("..", (Window::getIconWidth() - Window::getStringWidth(".."))/2 + x, (Window::getIconHeight() + y) - 25);
+		x+=Window::getIconWidth();
+	}
+	//Afficher les dossiers
 	for (int i = 0; i < path->top()->getFolderCount(); i++) {
 		if(x + Window::getIconWidth() >= Window::getWidth()) {
 			y+=Window::getIconHeight();
@@ -66,7 +76,7 @@ void onRefresh() {
 
 		x+=Window::getIconWidth();
 	}
-
+	//Afficher les notes
 	for (int j = 0; j < path->top()->getNoteCount(); j++) {
 		if(x + Window::getIconWidth() >= Window::getWidth()) {
 			y+=Window::getIconHeight();
@@ -84,11 +94,15 @@ void onRefresh() {
 
 		x+=Window::getIconWidth();
 	}
+	//Afficher les notes encodees
+	//bonus
 }
 
 void onWindowClick(const int& x, const int& y, const bool& button, const bool& ctrl) {
 	if (button) {
 		// TODO : Click sur un dossier ou une note du dossier actuel
+		
+		path->push(path->top()->getFolder(getIndex(x, y)));
 	}
 	else {
 		// TODO : Afficher le menu
