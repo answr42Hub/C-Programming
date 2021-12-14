@@ -18,22 +18,24 @@ int getIndex(const int& x, const int& y) {
 void onInit() {
 	// TODO : Initialisations
 	path = new Stack<Folder*>();
+	
+	path->push(new Folder("/"));
 
-	path->top()->creatFolder("ZZtop");
-	path->top()->creatFolder("Alfredo");
-	path->top()->creatFolder("KindaCringeeeeeeeeeeeeeeee");
-	path->top()->creatFolder("AAAAAA 4");
-	path->top()->creatFolder("Dossier 5");
-	path->top()->creatFolder("Dossier 6");
-	path->top()->creatFolder("FOLDERSS");
-	path->top()->creatFolder("Dossier 8");
+	path->top()->createFolder("ZZtop");
+	path->top()->createFolder("Alfredo");
+	path->top()->createFolder("KindaCringeeeeeeeeeeeeeeee");
+	path->top()->createFolder("AAAAAA 4");
+	path->top()->createFolder("Dossier 5");
+	path->top()->createFolder("Dossier 6");
+	path->top()->createFolder("FOLDERSS");
+	path->top()->createFolder("Dossier 8");
 	path->top()->createNote("Note 5");
 	path->top()->createNote("Note 2");
 	path->top()->createNote("Note 6666666666666666666");
 	path->top()->createNote("Note 4");
 	path->top()->createNote("Note 1");
 	path->top()->createNote("Note 3");
-	path->top()->getFolder(0)->creatFolder("Hello !");
+	path->top()->getFolder(0)->createFolder("Hello !");
 	path->top()->getFolder(0)->createNote("Hello !note");
 }
 
@@ -53,7 +55,7 @@ void onRefresh() {
 	string name;
 	if(path->size() > 1) {
 		Window::drawIcon(FOLDER, x, y);
-		
+
 		Window::drawString("..", (Window::getIconWidth() - Window::getStringWidth(".."))/2 + x, (Window::getIconHeight() + y) - 25);
 		x+=Window::getIconWidth();
 	}
@@ -101,7 +103,9 @@ void onRefresh() {
 void onWindowClick(const int& x, const int& y, const bool& button, const bool& ctrl) {
 	if (button) {
 		// TODO : Click sur un dossier ou une note du dossier actuel
-		
+		if(!getIndex(x, y) && path->size() > 1) {
+			path->pop();
+		}
 		path->push(path->top()->getFolder(getIndex(x, y)));
 	}
 	else {

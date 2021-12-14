@@ -16,7 +16,7 @@ public:
 		this->name = name;
 	}
 	//Creation d'un dossier
-	void creatFolder(string name) {
+	void createFolder(string name) {
 		folders.push_back(new Folder(name));
 		quickSortFolders(0, folders.size()-1);
 	}
