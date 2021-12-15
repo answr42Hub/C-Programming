@@ -18,6 +18,10 @@ public:
 	string getName(){
 		return name;
 	}
+	//Changer le nom 
+	void setNoteName(string newName) {
+		name = newName;
+	}
 	//Obtenir le contenu du fichier
 	string getContent(){
 		return content;

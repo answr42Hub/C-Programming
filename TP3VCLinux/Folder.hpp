@@ -33,6 +33,10 @@ public:
 	string getFolderName() {
 		return name;
 	}
+	//Changer le nom du dossier
+	void setFolderName(string newName) {
+		name = newName;
+	}
 	//Obtenir une note
 	Note* getNote(size_t index) {
 		return notes[index];

@@ -6,17 +6,22 @@
 #include "Folder.hpp"
 
 using namespace std;
-
+string title;
+int indx;
 Stack<Folder*>* path;
 //AVLTree<int>* selections;
 
 int getIndex(const int& x, const int& y) {
 	// TODO : Retourner l'indice de l'élément clické
-	return ((y/Window::getIconHeight())*(Window::getWidth()/Window::getIconWidth()) + x/Window::getIconWidth());
+	if(path->size() > 1)
+		return ((y/Window::getIconHeight())*(Window::getWidth()/Window::getIconWidth()) + x/Window::getIconWidth())-1;
+	else
+		return ((y/Window::getIconHeight())*(Window::getWidth()/Window::getIconWidth()) + x/Window::getIconWidth());
 }
 
 void onInit() {
 	// TODO : Initialisations
+	title = "/";
 	path = new Stack<Folder*>();
 	
 	path->push(new Folder("/"));
@@ -101,37 +106,63 @@ void onRefresh() {
 }
 
 void onWindowClick(const int& x, const int& y, const bool& button, const bool& ctrl) {
+	indx = getIndex(x, y);
 	if (button) {
 		// TODO : Click sur un dossier ou une note du dossier actuel
-		if(!getIndex(x, y) && path->size() > 1) {
+		
+		if(indx == -1) {
+			if(path->size() == 2) {
+				for(int i = 0; i < path->top()->getFolderName().size(); i++) 
+					title.pop_back();	
+			}
+			else {
+				for(int i = 0; i < path->top()->getFolderName().size()+1; i++) 
+					title.pop_back();
+			}
 			path->pop();
+			Window::setTitle(title);
 		}
-		path->push(path->top()->getFolder(getIndex(x, y)));
+		else if(path->top()->getFolderCount() && indx <= path->top()->getFolderCount()-1) {
+			if(path->size() > 1)
+				title+="/";
+			path->push(path->top()->getFolder(indx));
+			title += path->top()->getFolderName();
+			Window::setTitle(title);
+		}
 	}
+
 	else {
 		// TODO : Afficher le menu
-
+		if(indx != -1) {
+			if(indx < (path->top()->getFolderCount()+path->top()->getNoteCount()))
+				Window::showMenu(x, y, Menu::RENAME | Menu::DELETE | Menu::ENCODE | Menu::DECODE | Menu::SELECT_ALL);
+			else
+				Window::showMenu(x, y, Menu::NEW_FOLDER | Menu::NEW_NOTE | Menu::SELECT_ALL);
+		}
+			
 		//string nom = Window::showTextField("Nom Actuel");
-
-		//Window::showMenu(x, y, Menu::NEW_FOLDER | Menu::NEW_NOTE);
-
 	}
+
 }
 
 void onMenuClick(const unsigned int& menuItem) {
 	switch (menuItem) {
 	case Menu::NEW_FOLDER:
 		// TODO : Créer un nouveau dossier dans le dossier actuel
-		Window::showTextField();
+		path->top()->createFolder(Window::showTextField("New Folder"));
 		break;
 
 	case Menu::NEW_NOTE:
 		// TODO : Créer une nouvelle note dans le dossier actuel
-		Window::setTitle("Nouveau Titre");
+		path->top()->createNote(Window::showTextField("New Note"));
 		break;
 
 	case Menu::RENAME:
 		// TODO : Renommer le dossier ou la note
+		if(indx < path->top()->getFolderCount())
+			path->top()->getFolder(indx)->setFolderName(Window::showTextField(path->top()->getFolder(indx)->getFolderName()));
+		else if(indx < path->top()->getNoteCount()+path->top()->getFolderCount())
+			path->top()->getNote(indx-path->top()->getFolderCount())->setNoteName(Window::showTextField(path->top()->getNote(indx-path->top()->getFolderCount())->getName()));
 		break;
 
 	case Menu::DELETE:
