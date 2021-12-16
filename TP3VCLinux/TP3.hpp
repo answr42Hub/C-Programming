@@ -129,6 +129,10 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 			title += path->top()->getFolderName();
 			Window::setTitle(title);
 		}
+		else if(path->top()->getNoteCount() && indx-(path->top()->getFolderCount()) <= path->top()->getNoteCount()-1) {
+			indx -= (path->top()->getFolderCount());
+			path->top()->getNote(indx)->setNoteContent(Window::showTextField(path->top()->getNote(indx)->getContent()));
+		}
 	}
 
 	else {
@@ -139,10 +143,7 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 			else
 				Window::showMenu(x, y, Menu::NEW_FOLDER | Menu::NEW_NOTE | Menu::SELECT_ALL);
 		}
-			
-		//string nom = Window::showTextField("Nom Actuel");
 	}
-
 }
 
 void onMenuClick(const unsigned int& menuItem) {
@@ -167,6 +168,7 @@ void onMenuClick(const unsigned int& menuItem) {
 
 	case Menu::DELETE:
 		// TODO : Supprimer le ou les dossiers, et tout ce qu'ils contiennent, et la ou les notes sélectionnés
+		
 		break;
 
 	case Menu::ENCODE:

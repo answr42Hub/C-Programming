@@ -22,6 +22,10 @@ public:
 	void setNoteName(string newName) {
 		name = newName;
 	}
+	//Changer le nom 
+	void setNoteContent(string newContent) {
+		content = newContent;
+	}
 	//Obtenir le contenu du fichier
 	string getContent(){
 		return content;

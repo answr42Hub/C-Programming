@@ -1,4 +1,4 @@
-#include <queue>
+#include "Queue.hpp"
 #include "DLNode.hpp"
 
 using namespace std;
@@ -11,7 +11,7 @@ private:
     DLNode<T>* root;
     size_t count;
 
-    void prefixTraversal(DLNode<T>* node, queue<T>* traversalQueue) {
+    void prefixTraversal(DLNode<T>* node, Queue<T>* traversalQueue) {
         traversalQueue->push(node->data);
         if (node->left)
             prefixTraversal(node->left, traversalQueue);
@@ -19,7 +19,7 @@ private:
             prefixTraversal(node->right, traversalQueue);
     }
 
-    void infixTraversal(DLNode<T>* node, queue<T>* traversalQueue) {
+    void infixTraversal(DLNode<T>* node, Queue<T>* traversalQueue) {
         if (node->left)
             infixTraversal(node->left, traversalQueue);
         traversalQueue->push(node->data);
@@ -27,7 +27,7 @@ private:
             infixTraversal(node->right, traversalQueue);
     }
 
-    void postfixTraversal(DLNode<T>* node, queue<T>* traversalQueue) {
+    void postfixTraversal(DLNode<T>* node, Queue<T>* traversalQueue) {
         if (node->left)
             postfixTraversal(node->left, traversalQueue);
         if(node->right)
@@ -73,21 +73,82 @@ public:
         }
     }
 
-    void remove() {
-        DLNode<T>* parent = root;
-        //Positionner le pointeur "parent"
+    void remove(T data) {
+        if(root) {
+            DLNode<T>* parent;
+            DLNode<T>* toDelete = nullptr;
 
-        DLNode<T>* toDelete = root->right;
-        //positionner le toDelete selon la disposition du parent
+            if(root->data == data)
+                toDelete = root;
+            else
+                parent = root;
 
-        if(!toDelete->left && !toDelete->right) {
+            //Trouver le toDelete
+            while(!toDelete) {
+                if(parent->data > data){
+                    if(parent->right){
+                        if(parent->right->data == data) 
+                            toDelete = parent->right;
+                        else
+                            parent = parent->right;
+                    } 
+                    else
+                        return;
+                }
+                else {
+                    if(parent->left) {
+                        if(parent->left->data == data) 
+                            toDelete = parent->left;
+                        else
+                            parent = parent->left;
+                    } 
+                    else
+                        return;
+                }
+            }
+            
             //Le noeud a retirer est une feuille
-        }
-        else if(toDelete->left && toDelete->right) {
+            if(!toDelete->left && !toDelete->right) {
+                if(parent->left == toDelete)
+                    parent->left = nullptr;
+                else
+                    parent->right;
+                
+                delete(toDelete);
+                count--;
+            }
             //Le noeud a retirer a deux enfants
-        }
-        else {
-            //Le noeud a retirer a 1 enfant
+            else if(toDelete->left && toDelete->right) {
+                T temp;
+                DLNode<T>* largest = toDelete->left;
+                //Trouver la plus grande donnée du sous-arbre de gauche, du noeud à retirer.
+                while(largest->right){
+                    largest = largest->right;
+                }
+
+                temp = largest->data;
+
+                remove(largest->data);
+                
+                toDelete->data = temp;
+
+            }
+            //Le noeud a retirer a un enfant
+            else {
+                if(parent->left == toDelete){
+                    if(toDelete->left)
+                        parent->left = toDelete->left;
+                    else
+                        parent->left = toDelete->right;
+                }
+                else {
+                    if(toDelete->left)
+                        parent->right = toDelete->left;
+                    else
+                        parent->right = toDelete->right;
+                }
+                delete(toDelete);
+            }
         }
     }
 
@@ -106,9 +167,9 @@ public:
         }
     }
 
-    queue<T>* traversal(Traversal type) {
+    Queue<T>* traversal(Traversal type) {
         
-        queue<T>* traversalQueue = new queue<T>();
+        Queue<T>* traversalQueue = new Queue<T>();
         
         if(root) {
             switch (type) {
