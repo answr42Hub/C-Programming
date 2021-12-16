@@ -168,6 +168,12 @@ void onMenuClick(const unsigned int& menuItem) {
 
 	case Menu::DELETE:
 		// TODO : Supprimer le ou les dossiers, et tout ce qu'ils contiennent, et la ou les notes sélectionnés
+		if(indx < path->top()->getFolderCount())
+			path->top()->deleteFolder(indx);
+		else if(indx < path->top()->getNoteCount()+path->top()->getFolderCount()) {
+			indx -= (path->top()->getFolderCount());
+			path->top()->deleteNote(indx);
+		}
 		
 		break;
 
@@ -181,6 +187,7 @@ void onMenuClick(const unsigned int& menuItem) {
 
 	case Menu::SELECT_ALL:
 		// TODO : Sélectionner tous les dossiers et notes du dossier actuel
+
 		break;
 	}
 }
