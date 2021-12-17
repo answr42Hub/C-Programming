@@ -107,7 +107,25 @@ void onRefresh() {
 
 void onWindowClick(const int& x, const int& y, const bool& button, const bool& ctrl) {
 	indx = getIndex(x, y);
-	if (button) {
+	BSTree<int> selected;
+	Queue<int>* indexSorted;
+	if(button && ctrl) {
+		
+		if(!selected.size())
+			selected.add(indx);
+		else if(!selected.search(indx)) {
+			selected.add(indx);
+		}
+		else {
+			selected.remove(indx);
+		}
+		indexSorted = selected.traversal(Infix);
+
+		//continue
+		
+	}
+
+	else if (button) {
 		// TODO : Click sur un dossier ou une note du dossier actuel
 		
 		if(indx == -1) {
@@ -174,7 +192,7 @@ void onMenuClick(const unsigned int& menuItem) {
 			indx -= (path->top()->getFolderCount());
 			path->top()->deleteNote(indx);
 		}
-		
+
 		break;
 
 	case Menu::ENCODE:

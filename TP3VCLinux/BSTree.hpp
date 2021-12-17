@@ -187,4 +187,8 @@ public:
         return traversalQueue;
     }
 
+    size_t size() {
+        return count;
+    }
+
 };
