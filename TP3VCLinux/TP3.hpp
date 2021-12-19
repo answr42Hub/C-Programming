@@ -9,14 +9,32 @@ using namespace std;
 string title;
 int indx;
 Stack<Folder*>* path;
+BSTree<int> selections;
 //AVLTree<int>* selections;
 
+// Fonction retournant l'index d'un element
 int getIndex(const int& x, const int& y) {
 	// TODO : Retourner l'indice de l'élément clické
 	if(path->size() > 1)
 		return ((y/Window::getIconHeight())*(Window::getWidth()/Window::getIconWidth()) + x/Window::getIconWidth())-1;
 	else
 		return ((y/Window::getIconHeight())*(Window::getWidth()/Window::getIconWidth()) + x/Window::getIconWidth());
+}
+
+//Fonction retournant le nom du fichier tronqué
+string trunkName(string name) {
+	while((Window::getStringWidth(name) + Window::getStringWidth("...")) > Window::getIconWidth()) {
+		name.pop_back();
+	}
+	name += "...";
+	return name;
+}
+
+// Methode pour retirer la selection de tous les element
+void unselectAll() {
+	while(selections.size()) {
+		selections.remove(selections.traversal(Infix)->front());
+	}
 }
 
 void onInit() {
@@ -44,15 +62,6 @@ void onInit() {
 	path->top()->getFolder(0)->createNote("Hello !note");
 }
 
-//Fonction retournant le nom du fichier tronqué
-string trunkName(string name) {
-	while((Window::getStringWidth(name) + Window::getStringWidth("...")) > Window::getIconWidth()) {
-		name.pop_back();
-	}
-	name += "...";
-	return name;
-}
-
 void onRefresh() {
 	// TODO : Afficher le contenu du dossier actuel
 	//Faire une boucle pour afficher tous les dossiers et notes selon la largeur de la fenetre
@@ -77,7 +86,7 @@ void onRefresh() {
 			name = trunkName(name);
 		}
 
-		Window::drawIcon(FOLDER, x, y);
+		Window::drawIcon(FOLDER, x, y, selections.search(getIndex(x, y)));
 		
 		Window::drawString(name, (Window::getIconWidth() - Window::getStringWidth(name))/2 + x, (Window::getIconHeight() + y) - 25);
 
@@ -96,7 +105,7 @@ void onRefresh() {
 			name = trunkName(name);
 		}
 
-		Window::drawIcon(NOTE, x, y);
+		Window::drawIcon(NOTE, x, y, selections.search(getIndex(x, y)));
 		Window::drawString(name, (Window::getIconWidth() - Window::getStringWidth(name))/2 + x, (Window::getIconHeight() + y) - 25);
 
 		x+=Window::getIconWidth();
@@ -107,21 +116,23 @@ void onRefresh() {
 
 void onWindowClick(const int& x, const int& y, const bool& button, const bool& ctrl) {
 	indx = getIndex(x, y);
-	BSTree<int> selected;
-	Queue<int>* indexSorted;
+	//Queue<int>* indexSorted;
 	if(button && ctrl) {
 		
-		if(!selected.size())
-			selected.add(indx);
-		else if(!selected.search(indx)) {
-			selected.add(indx);
+		if(!selections.size())
+			selections.add(indx);
+		else if(!selections.search(indx)) {
+			selections.add(indx);
 		}
 		else {
-			selected.remove(indx);
+			selections.remove(indx);
 		}
-		indexSorted = selected.traversal(Infix);
+
+		//suppression
+		//indexSorted = selections.traversal(Infix);
 
 		//continue
+		
 		
 	}
 
@@ -151,6 +162,9 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 			indx -= (path->top()->getFolderCount());
 			path->top()->getNote(indx)->setNoteContent(Window::showTextField(path->top()->getNote(indx)->getContent()));
 		}
+
+		unselectAll();
+		
 	}
 
 	else {
@@ -205,6 +219,12 @@ void onMenuClick(const unsigned int& menuItem) {
 
 	case Menu::SELECT_ALL:
 		// TODO : Sélectionner tous les dossiers et notes du dossier actuel
+		// Methode pour tout selectionner
+
+		for(int i = 0; i < (path->top()->getFolderCount()+path->top()->getNoteCount()); i++) {
+			if(!selections.search(i))
+				selections.add(i);
+		}
 
 		break;
 	}

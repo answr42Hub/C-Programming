@@ -42,11 +42,11 @@ public:
     }
 
     T front() {
-        return (first) ? first->data : NULL;
+        return (first) ? first->data : 0;
     }
 
     T back() {
-        return (last) ? last->data : NULL;
+        return (last) ? last->data : 0;
     }
 
     size_t size() {

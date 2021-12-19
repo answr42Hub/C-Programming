@@ -10,6 +10,6 @@ public:
     DLNode(T data, DLNode<T>* left = nullptr, DLNode<T>* right = nullptr) {
         this->data=data;
         this->left=left;
-        this->right;
+        this->right=right;
     }
 };

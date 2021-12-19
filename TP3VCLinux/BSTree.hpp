@@ -114,6 +114,7 @@ public:
                 else
                     parent->right;
                 
+                toDelete = nullptr;
                 delete(toDelete);
                 count--;
             }
@@ -131,7 +132,9 @@ public:
                 remove(largest->data);
                 
                 toDelete->data = temp;
-
+                toDelete = nullptr;
+                delete(toDelete);
+                count--;
             }
             //Le noeud a retirer a un enfant
             else {
@@ -147,7 +150,9 @@ public:
                     else
                         parent->right = toDelete->right;
                 }
+                toDelete = nullptr;
                 delete(toDelete);
+                count--;
             }
         }
         else {
@@ -158,6 +163,7 @@ public:
     }
 
     bool search(T data) {
+        
         if(root) {
             DLNode<T>* runner = root;
             while(runner) {
@@ -165,11 +171,16 @@ public:
                     runner = runner->left;
                 else if(data > runner->data) 
                     runner = runner->right;
-                else
+                else {
+                    runner = nullptr;
+                    delete(runner);
                     return true;
+                }
             }
-            return false;
+            runner = nullptr;
+            delete(runner);
         }
+        return false;
     }
 
     Queue<T>* traversal(Traversal type) {
