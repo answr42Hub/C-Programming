@@ -74,7 +74,7 @@ public:
     }
 
     void remove(T data) {
-        if(root) {
+        if(root && count > 1) {
             DLNode<T>* parent;
             DLNode<T>* toDelete = nullptr;
 
@@ -149,6 +149,11 @@ public:
                 }
                 delete(toDelete);
             }
+        }
+        else {
+            
+            root = nullptr;
+            count--;
         }
     }
 

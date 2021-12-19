@@ -47,11 +47,11 @@ int main() {
     cout << "Generation: " << deltaTime.count() << " secondes." << endl;
 
     // Tri Simple
-    start = steady_clock::now();
-    simpleSort();
-    stop = steady_clock::now();
-    deltaTime = duration_cast<duration<double>>(stop-start);
-    cout << "Tri Simple: " << deltaTime.count() << " secondes." << endl;
+    // start = steady_clock::now();
+    // simpleSort();
+    // stop = steady_clock::now();
+    // deltaTime = duration_cast<duration<double>>(stop-start);
+    // cout << "Tri Simple: " << deltaTime.count() << " secondes." << endl;
 
     // Tri Rapide
     start = steady_clock::now();
