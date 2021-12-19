@@ -37,6 +37,16 @@ void unselectAll() {
 	}
 }
 
+// Methode pour supprimer un element selon son indexe
+void deleteElement(int elementIndex) {
+	if(elementIndex < path->top()->getFolderCount())
+		path->top()->deleteFolder(elementIndex);
+	else if(elementIndex < path->top()->getNoteCount()+path->top()->getFolderCount()) {
+		elementIndex -= (path->top()->getFolderCount());
+		path->top()->deleteNote(elementIndex);
+	}
+}
+
 void onInit() {
 	// TODO : Initialisations
 	title = "/";
@@ -116,7 +126,7 @@ void onRefresh() {
 
 void onWindowClick(const int& x, const int& y, const bool& button, const bool& ctrl) {
 	indx = getIndex(x, y);
-	//Queue<int>* indexSorted;
+	
 	if(button && ctrl) {
 		
 		if(!selections.size())
@@ -127,13 +137,6 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 		else {
 			selections.remove(indx);
 		}
-
-		//suppression
-		//indexSorted = selections.traversal(Infix);
-
-		//continue
-		
-		
 	}
 
 	else if (button) {
@@ -173,7 +176,7 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 			if(indx < (path->top()->getFolderCount()+path->top()->getNoteCount()))
 				Window::showMenu(x, y, Menu::RENAME | Menu::DELETE | Menu::ENCODE | Menu::DECODE | Menu::SELECT_ALL);
 			else
-				Window::showMenu(x, y, Menu::NEW_FOLDER | Menu::NEW_NOTE | Menu::SELECT_ALL);
+				Window::showMenu(x, y, Menu::NEW_FOLDER | Menu::NEW_NOTE | Menu::DELETE | Menu::SELECT_ALL);
 		}
 	}
 }
@@ -200,13 +203,23 @@ void onMenuClick(const unsigned int& menuItem) {
 
 	case Menu::DELETE:
 		// TODO : Supprimer le ou les dossiers, et tout ce qu'ils contiennent, et la ou les notes sélectionnés
-		if(indx < path->top()->getFolderCount())
-			path->top()->deleteFolder(indx);
-		else if(indx < path->top()->getNoteCount()+path->top()->getFolderCount()) {
-			indx -= (path->top()->getFolderCount());
-			path->top()->deleteNote(indx);
+		Queue<int>* indexSorted;
+		indexSorted = selections.traversal(Infix);
+		if(selections.size()) {
+			while(indexSorted->size()) {
+				deleteElement(indexSorted->front());
+				indexSorted->pop();
+			}
 		}
 
+		else {
+			deleteElement(indx);
+		}
+		
+		unselectAll();
+
+		indexSorted = nullptr;
+		delete(indexSorted);
 		break;
 
 	case Menu::ENCODE:

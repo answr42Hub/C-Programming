@@ -13,22 +13,22 @@ private:
 
     void prefixTraversal(DLNode<T>* node, Queue<T>* traversalQueue) {
         traversalQueue->push(node->data);
-        if (node->left)
+        if(node->left)
             prefixTraversal(node->left, traversalQueue);
         if(node->right)
             prefixTraversal(node->right, traversalQueue);
     }
 
     void infixTraversal(DLNode<T>* node, Queue<T>* traversalQueue) {
-        if (node->left)
-            infixTraversal(node->left, traversalQueue);
-        traversalQueue->push(node->data);
         if(node->right)
             infixTraversal(node->right, traversalQueue);
+        traversalQueue->push(node->data);
+        if(node->left)
+            infixTraversal(node->left, traversalQueue);
     }
 
     void postfixTraversal(DLNode<T>* node, Queue<T>* traversalQueue) {
-        if (node->left)
+        if(node->left)
             postfixTraversal(node->left, traversalQueue);
         if(node->right)
             postfixTraversal(node->right, traversalQueue);
@@ -85,15 +85,18 @@ public:
 
             //Trouver le toDelete
             while(!toDelete) {
-                if(parent->data > data){
+                if(data > parent->data){
                     if(parent->right){
                         if(parent->right->data == data) 
                             toDelete = parent->right;
                         else
                             parent = parent->right;
                     } 
-                    else
+                    else {
+                        parent = nullptr;
+                        delete(parent);
                         return;
+                    }
                 }
                 else {
                     if(parent->left) {
@@ -102,8 +105,11 @@ public:
                         else
                             parent = parent->left;
                     } 
-                    else
+                    else {
+                        parent = nullptr;
+                        delete(parent);
                         return;
+                    }
                 }
             }
             
@@ -112,10 +118,14 @@ public:
                 if(parent->left == toDelete)
                     parent->left = nullptr;
                 else
-                    parent->right;
+                    parent->right = nullptr;
                 
                 toDelete = nullptr;
                 delete(toDelete);
+
+                parent = nullptr;
+                delete(parent);
+                
                 count--;
             }
             //Le noeud a retirer a deux enfants
@@ -132,6 +142,9 @@ public:
                 remove(largest->data);
                 
                 toDelete->data = temp;
+
+                largest = nullptr;
+                delete(largest);
                 toDelete = nullptr;
                 delete(toDelete);
                 count--;
@@ -150,6 +163,10 @@ public:
                     else
                         parent->right = toDelete->right;
                 }
+
+                parent = nullptr;
+                delete(parent);
+
                 toDelete = nullptr;
                 delete(toDelete);
                 count--;
