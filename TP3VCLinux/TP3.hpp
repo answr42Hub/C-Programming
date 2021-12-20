@@ -6,6 +6,7 @@
 
 using namespace std;
 string title;
+string name;
 int indx;
 Stack<Folder*>* path;
 BSTree<int>* selections;
@@ -39,6 +40,22 @@ void deleteElement(int elementIndex) {
 	}
 }
 
+//Fonctions qui verifie si le nom de dossier ou de note existe
+bool folderExists(string name) {
+	for(int i = 0; i < path->top()->getFolderCount(); i++) {
+		if(path->top()->getFolder(i)->getFolderName() == name)
+			return true;
+	}
+	return false;
+}
+bool noteExists(string name) {
+	for(int i = 0; i < path->top()->getNoteCount(); i++) {
+		if(path->top()->getNote(i)->getName() == name)
+			return true;
+	}
+	return false;
+}
+
 void onInit() {
 	// TODO : Initialisations
 	title = "/";
@@ -47,29 +64,28 @@ void onInit() {
 
 	path->push(new Folder("/"));
 
-	path->top()->createFolder("ZZtop");
-	path->top()->createFolder("Alfredo");
-	path->top()->createFolder("KindaCringeeeeeeeeeeeeeeee");
-	path->top()->createFolder("AAAAAA 4");
-	path->top()->createFolder("Dossier 5");
-	path->top()->createFolder("Dossier 6");
-	path->top()->createFolder("FOLDERSS");
-	path->top()->createFolder("Dossier 8");
-	path->top()->createNote("Note 5");
-	path->top()->createNote("Note 2");
-	path->top()->createNote("Note 6666666666666666666");
-	path->top()->createNote("Note 4");
-	path->top()->createNote("Note 1");
-	path->top()->createNote("Note 3");
-	path->top()->getFolder(0)->createFolder("Hello !");
-	path->top()->getFolder(0)->createNote("Hello !note");
+	// path->top()->createFolder("ZZtop");
+	// path->top()->createFolder("Alfredo");
+	// path->top()->createFolder("KindaCringeeeeeeeeeeeeeeee");
+	// path->top()->createFolder("AAAAAA 4");
+	// path->top()->createFolder("Dossier 5");
+	// path->top()->createFolder("Dossier 6");
+	// path->top()->createFolder("FOLDERSS");
+	// path->top()->createFolder("Dossier 8");
+	// path->top()->createNote("Note 5");
+	// path->top()->createNote("Note 2");
+	// path->top()->createNote("Note 6666666666666666666");
+	// path->top()->createNote("Note 4");
+	// path->top()->createNote("Note 1");
+	// path->top()->createNote("Note 3");
+	// path->top()->getFolder(0)->createFolder("Hello !");
+	// path->top()->getFolder(0)->createNote("Hello !note");
 }
 
 void onRefresh() {
 	// TODO : Afficher le contenu du dossier actuel
-	//Faire une boucle pour afficher tous les dossiers et notes selon la largeur de la fenetre
 	int x = 0, y = 0;
-	string name;
+	
 	if(path->size() > 1) {
 		Window::drawIcon(FOLDER, x, y);
 
@@ -176,22 +192,35 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 
 void onMenuClick(const unsigned int& menuItem) {
 	switch (menuItem) {
-	case Menu::NEW_FOLDER:
+	case Menu::NEW_FOLDER: {
 		// TODO : Créer un nouveau dossier dans le dossier actuel
-		path->top()->createFolder(Window::showTextField("New Folder"));
+		name = Window::showTextField("New Folder");
+		if(name != "" && !folderExists(name)) {
+			path->top()->createFolder(name);
+		}
 		break;
-
-	case Menu::NEW_NOTE:
+	}
+	case Menu::NEW_NOTE: {
 		// TODO : Créer une nouvelle note dans le dossier actuel
-		path->top()->createNote(Window::showTextField("New Note"));
+		name = Window::showTextField("New Note");
+		if(name != "" && !noteExists(name)) {
+			path->top()->createNote(name);
+		}
 		break;
-
+	}
 	case Menu::RENAME:
 		// TODO : Renommer le dossier ou la note
-		if(indx < path->top()->getFolderCount())
-			path->top()->getFolder(indx)->setFolderName(Window::showTextField(path->top()->getFolder(indx)->getFolderName()));
-		else if(indx < path->top()->getNoteCount()+path->top()->getFolderCount())
-			path->top()->getNote(indx-path->top()->getFolderCount())->setNoteName(Window::showTextField(path->top()->getNote(indx-path->top()->getFolderCount())->getName()));
+		if(indx < path->top()->getFolderCount()) {
+			name = Window::showTextField(path->top()->getFolder(indx)->getFolderName());
+			if(!folderExists(name))
+				path->top()->getFolder(indx)->setFolderName(name);
+		}
+		else if(indx < path->top()->getNoteCount()+path->top()->getFolderCount()) {
+			name = Window::showTextField(path->top()->getNote(indx-path->top()->getFolderCount())->getName());
+			if(!noteExists(name))
+				path->top()->getNote(indx-path->top()->getFolderCount())->setNoteName(name);
+			
+		}
 		break;
 
 	case Menu::DELETE:
@@ -238,8 +267,13 @@ void onMenuClick(const unsigned int& menuItem) {
 void onQuit() {
 	// TODO : Libérations
 	while(path->size()) {
-		while(path->top()->getFolderCount() + path->top()->getNoteCount()) {
-			deleteElement((path->top()->getFolderCount() + path->top()->getNoteCount())-1);
+		if(path->size() == 1) {
+			delete(path->top());
+		}
+		else {
+			while(path->top()->getFolderCount() + path->top()->getNoteCount()) {
+				deleteElement((path->top()->getFolderCount() + path->top()->getNoteCount())-1);
+			}
 		}
 		path->pop();
 	}
