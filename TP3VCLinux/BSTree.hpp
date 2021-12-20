@@ -75,7 +75,7 @@ public:
 
     void remove(T data) {
         if(root && count > 1) {
-            DLNode<T>* parent;
+            DLNode<T>* parent = nullptr;
             DLNode<T>* toDelete = nullptr;
 
             if(root->data == data)
@@ -93,8 +93,6 @@ public:
                             parent = parent->right;
                     } 
                     else {
-                        parent = nullptr;
-                        delete(parent);
                         return;
                     }
                 }
@@ -106,8 +104,6 @@ public:
                             parent = parent->left;
                     } 
                     else {
-                        parent = nullptr;
-                        delete(parent);
                         return;
                     }
                 }
@@ -120,54 +116,56 @@ public:
                 else
                     parent->right = nullptr;
                 
-                toDelete = nullptr;
                 delete(toDelete);
-
-                parent = nullptr;
-                delete(parent);
                 
                 count--;
             }
+
             //Le noeud a retirer a deux enfants
             else if(toDelete->left && toDelete->right) {
                 T temp;
-                DLNode<T>* largest = toDelete->left;
-                //Trouver la plus grande donnée du sous-arbre de gauche, du noeud à retirer.
-                while(largest->right){
-                    largest = largest->right;
+                if(toDelete->left){
+                    DLNode<T>* largest = toDelete->left;
+                    //Trouver la plus grande donnée du sous-arbre de gauche, du noeud à retirer.
+                    while(largest->right){
+                        largest = largest->right;
+                    }
+                    temp = largest->data;
+
+                    remove(largest->data);
                 }
+                else {
+                    temp = toDelete->left->data;
 
-                temp = largest->data;
-
-                remove(largest->data);
+                    remove(toDelete->left->data);
+                }
                 
                 toDelete->data = temp;
-
-                largest = nullptr;
-                delete(largest);
-                toDelete = nullptr;
-                delete(toDelete);
                 count--;
             }
             //Le noeud a retirer a un enfant
             else {
-                if(parent->left == toDelete){
-                    if(toDelete->left)
-                        parent->left = toDelete->left;
-                    else
-                        parent->left = toDelete->right;
+                if(parent)  {
+                    if(parent->left == toDelete){
+                        if(toDelete->left)
+                            parent->left = toDelete->left;
+                        else
+                            parent->left = toDelete->right;
+                    }
+                    else {
+                        if(toDelete->left)
+                            parent->right = toDelete->left;
+                        else
+                            parent->right = toDelete->right;
+                    }
                 }
                 else {
                     if(toDelete->left)
-                        parent->right = toDelete->left;
+                        root = toDelete->left;
                     else
-                        parent->right = toDelete->right;
+                        root = toDelete->right;
                 }
 
-                parent = nullptr;
-                delete(parent);
-
-                toDelete = nullptr;
                 delete(toDelete);
                 count--;
             }
@@ -189,13 +187,9 @@ public:
                 else if(data > runner->data) 
                     runner = runner->right;
                 else {
-                    runner = nullptr;
-                    delete(runner);
                     return true;
                 }
             }
-            runner = nullptr;
-            delete(runner);
         }
         return false;
     }
@@ -218,6 +212,12 @@ public:
             }
         }
         return traversalQueue;
+    }
+
+    void clear() {
+        while(count) {
+            remove(root->data);
+        }
     }
 
     size_t size() {

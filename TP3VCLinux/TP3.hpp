@@ -1,6 +1,5 @@
 #include "Stack.hpp"
 #include <vector>
-#include <deque>
 #include "BSTree.hpp"
 //#include "AVLTree"
 #include "Folder.hpp"
@@ -9,7 +8,7 @@ using namespace std;
 string title;
 int indx;
 Stack<Folder*>* path;
-BSTree<int> selections;
+BSTree<int>* selections;
 //AVLTree<int>* selections;
 
 // Fonction retournant l'index d'un element
@@ -30,13 +29,6 @@ string trunkName(string name) {
 	return name;
 }
 
-// Methode pour retirer la selection de tous les element
-void unselectAll() {
-	while(selections.size()) {
-		selections.remove(selections.traversal(Infix)->front());
-	}
-}
-
 // Methode pour supprimer un element selon son indexe
 void deleteElement(int elementIndex) {
 	if(elementIndex < path->top()->getFolderCount())
@@ -51,7 +43,8 @@ void onInit() {
 	// TODO : Initialisations
 	title = "/";
 	path = new Stack<Folder*>();
-	
+	selections = new BSTree<int>();
+
 	path->push(new Folder("/"));
 
 	path->top()->createFolder("ZZtop");
@@ -96,7 +89,7 @@ void onRefresh() {
 			name = trunkName(name);
 		}
 
-		Window::drawIcon(FOLDER, x, y, selections.search(getIndex(x, y)));
+		Window::drawIcon(FOLDER, x, y, selections->search(getIndex(x, y)));
 		
 		Window::drawString(name, (Window::getIconWidth() - Window::getStringWidth(name))/2 + x, (Window::getIconHeight() + y) - 25);
 
@@ -115,7 +108,7 @@ void onRefresh() {
 			name = trunkName(name);
 		}
 
-		Window::drawIcon(NOTE, x, y, selections.search(getIndex(x, y)));
+		Window::drawIcon(NOTE, x, y, selections->search(getIndex(x, y)));
 		Window::drawString(name, (Window::getIconWidth() - Window::getStringWidth(name))/2 + x, (Window::getIconHeight() + y) - 25);
 
 		x+=Window::getIconWidth();
@@ -129,13 +122,13 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 	
 	if(button && ctrl) {
 		
-		if(!selections.size())
-			selections.add(indx);
-		else if(!selections.search(indx)) {
-			selections.add(indx);
+		if(!selections->size())
+			selections->add(indx);
+		else if(!selections->search(indx)) {
+			selections->add(indx);
 		}
 		else {
-			selections.remove(indx);
+			selections->remove(indx);
 		}
 	}
 
@@ -166,7 +159,7 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 			path->top()->getNote(indx)->setNoteContent(Window::showTextField(path->top()->getNote(indx)->getContent()));
 		}
 
-		unselectAll();
+		selections->clear();
 		
 	}
 
@@ -204,8 +197,8 @@ void onMenuClick(const unsigned int& menuItem) {
 	case Menu::DELETE:
 		// TODO : Supprimer le ou les dossiers, et tout ce qu'ils contiennent, et la ou les notes sélectionnés
 		Queue<int>* indexSorted;
-		indexSorted = selections.traversal(Infix);
-		if(selections.size()) {
+		indexSorted = selections->traversal(Infix);
+		if(selections->size()) {
 			while(indexSorted->size()) {
 				deleteElement(indexSorted->front());
 				indexSorted->pop();
@@ -216,9 +209,8 @@ void onMenuClick(const unsigned int& menuItem) {
 			deleteElement(indx);
 		}
 		
-		unselectAll();
+		selections->clear();
 
-		indexSorted = nullptr;
 		delete(indexSorted);
 		break;
 
@@ -235,8 +227,8 @@ void onMenuClick(const unsigned int& menuItem) {
 		// Methode pour tout selectionner
 
 		for(int i = 0; i < (path->top()->getFolderCount()+path->top()->getNoteCount()); i++) {
-			if(!selections.search(i))
-				selections.add(i);
+			if(!selections->search(i))
+				selections->add(i);
 		}
 
 		break;
@@ -245,4 +237,14 @@ void onMenuClick(const unsigned int& menuItem) {
 
 void onQuit() {
 	// TODO : Libérations
+	while(path->size()) {
+		while(path->top()->getFolderCount() + path->top()->getNoteCount()) {
+			deleteElement((path->top()->getFolderCount() + path->top()->getNoteCount())-1);
+		}
+		path->pop();
+	}
+	delete(path);
+	selections->clear();
+	delete(selections);
+	
 }
