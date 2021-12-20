@@ -10,6 +10,7 @@ string name;
 int indx;
 Stack<Folder*>* path;
 BSTree<int>* selections;
+Queue<int>* indexSorted;
 //AVLTree<int>* selections;
 
 // Fonction retournant l'index d'un element
@@ -225,7 +226,7 @@ void onMenuClick(const unsigned int& menuItem) {
 
 	case Menu::DELETE:
 		// TODO : Supprimer le ou les dossiers, et tout ce qu'ils contiennent, et la ou les notes sélectionnés
-		Queue<int>* indexSorted;
+		
 		indexSorted = selections->traversal(Infix);
 		if(selections->size()) {
 			while(indexSorted->size()) {
@@ -233,14 +234,11 @@ void onMenuClick(const unsigned int& menuItem) {
 				indexSorted->pop();
 			}
 		}
-
 		else {
 			deleteElement(indx);
 		}
-		
+		delete indexSorted;
 		selections->clear();
-
-		delete(indexSorted);
 		break;
 
 	case Menu::ENCODE:
@@ -266,9 +264,10 @@ void onMenuClick(const unsigned int& menuItem) {
 
 void onQuit() {
 	// TODO : Libérations
+	
 	while(path->size()) {
 		if(path->size() == 1) {
-			delete(path->top());
+			delete path->top();
 		}
 		else {
 			while(path->top()->getFolderCount() + path->top()->getNoteCount()) {
@@ -277,8 +276,8 @@ void onQuit() {
 		}
 		path->pop();
 	}
-	delete(path);
+	delete path;
 	selections->clear();
-	delete(selections);
+	delete selections;
 	
 }

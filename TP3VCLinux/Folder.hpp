@@ -17,11 +17,11 @@ public:
 	}
 	~Folder(){
 		for(int i = folders.size()-1; i >= 0; i = folders.size()-1) {
-			delete(folders[i]);
+			delete folders[i];
 			folders.erase(folders.begin() + i);
 		}
 		for(int j = notes.size()-1; j >= 0; j = notes.size()-1) {
-			delete(notes[j]);
+			delete notes[j];
 			notes.erase(notes.begin() + j);
 		}
 	}
@@ -38,12 +38,12 @@ public:
 	}
 	//Supprimer un dossier
 	void deleteFolder(size_t index) {
-		delete(folders[index]);
+		delete folders[index];
 		folders.erase(folders.begin() + index);
 	}
 	//Supprimer une note
 	void deleteNote(size_t index) {
-		delete(notes[index]);
+		delete notes[index];
 		notes.erase(notes.begin() + index);
 	}
 	//Obtenir un dossier

@@ -2,6 +2,7 @@
     "files.associations": {
         "utility": "cpp",
         "cstdlib": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "new": "cpp"
     }
 }

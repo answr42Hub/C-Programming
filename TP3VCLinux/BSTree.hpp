@@ -116,7 +116,7 @@ public:
                 else
                     parent->right = nullptr;
                 
-                delete(toDelete);
+                delete toDelete;
                 
                 count--;
             }
@@ -166,7 +166,7 @@ public:
                         root = toDelete->right;
                 }
 
-                delete(toDelete);
+                delete toDelete;
                 count--;
             }
         }
