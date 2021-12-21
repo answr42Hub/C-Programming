@@ -264,7 +264,7 @@ void onQuit() {
 	// TODO : Libérations
 	
 	while(path->size()) {
-		delete path->top();
+		//delete path->top();
 		path->pop();
 	}
 	delete path;
