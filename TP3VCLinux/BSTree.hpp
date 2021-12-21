@@ -172,6 +172,7 @@ public:
         }
         else {
             
+            delete root;
             root = nullptr;
             count--;
         }

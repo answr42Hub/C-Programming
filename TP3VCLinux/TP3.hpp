@@ -65,22 +65,22 @@ void onInit() {
 
 	path->push(new Folder("/"));
 
-	// path->top()->createFolder("ZZtop");
-	// path->top()->createFolder("Alfredo");
-	// path->top()->createFolder("KindaCringeeeeeeeeeeeeeeee");
-	// path->top()->createFolder("AAAAAA 4");
-	// path->top()->createFolder("Dossier 5");
-	// path->top()->createFolder("Dossier 6");
-	// path->top()->createFolder("FOLDERSS");
-	// path->top()->createFolder("Dossier 8");
-	// path->top()->createNote("Note 5");
-	// path->top()->createNote("Note 2");
-	// path->top()->createNote("Note 6666666666666666666");
-	// path->top()->createNote("Note 4");
-	// path->top()->createNote("Note 1");
-	// path->top()->createNote("Note 3");
-	// path->top()->getFolder(0)->createFolder("Hello !");
-	// path->top()->getFolder(0)->createNote("Hello !note");
+	path->top()->createFolder("ZZtop");
+	path->top()->createFolder("Alfredo");
+	path->top()->createFolder("KindaCringeeeeeeeeeeeeeeee");
+	path->top()->createFolder("AAAAAA 4");
+	path->top()->createFolder("Dossier 5");
+	path->top()->createFolder("Dossier 6");
+	path->top()->createFolder("FOLDERSS");
+	path->top()->createFolder("Dossier 8");
+	path->top()->createNote("Note 5");
+	path->top()->createNote("Note 2");
+	path->top()->createNote("Note 6666666666666666666");
+	path->top()->createNote("Note 4");
+	path->top()->createNote("Note 1");
+	path->top()->createNote("Note 3");
+	path->top()->getFolder(0)->createFolder("Hello !");
+	path->top()->getFolder(0)->createNote("Hello !note");
 }
 
 void onRefresh() {
