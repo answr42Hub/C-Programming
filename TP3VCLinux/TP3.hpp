@@ -139,9 +139,7 @@ void onWindowClick(const int& x, const int& y, const bool& button, const bool& c
 	
 	if(button && ctrl) {
 		
-		if(!selections->size())
-			selections->add(indx);
-		else if(!selections->search(indx)) {
+		if(!selections->search(indx)) {
 			selections->add(indx);
 		}
 		else {

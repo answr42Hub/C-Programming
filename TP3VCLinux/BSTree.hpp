@@ -131,16 +131,15 @@ public:
                         largest = largest->right;
                     }
                     temp = largest->data;
-
-                    remove(largest->data);
+                    remove(temp);
                 }
                 else {
                     temp = toDelete->left->data;
-
-                    remove(toDelete->left->data);
+                    remove(temp);
                 }
                 
                 toDelete->data = temp;
+
                 count--;
             }
             //Le noeud a retirer a un enfant
