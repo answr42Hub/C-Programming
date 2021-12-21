@@ -111,14 +111,13 @@ public:
             
             //Le noeud a retirer est une feuille
             if(!toDelete->left && !toDelete->right) {
+
+                delete toDelete;
+                count--;
                 if(parent->left == toDelete)
                     parent->left = nullptr;
                 else
                     parent->right = nullptr;
-                
-                delete toDelete;
-                
-                count--;
             }
 
             //Le noeud a retirer a deux enfants
@@ -139,8 +138,6 @@ public:
                 }
                 
                 toDelete->data = temp;
-
-                count--;
             }
             //Le noeud a retirer a un enfant
             else {
@@ -170,7 +167,6 @@ public:
             }
         }
         else {
-            
             delete root;
             root = nullptr;
             count--;
