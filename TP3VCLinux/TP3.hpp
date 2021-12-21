@@ -272,7 +272,7 @@ void onQuit() {
 				deleteElement((path->top()->getFolderCount() + path->top()->getNoteCount())-1);
 			}
 		}
-		delete path->top();
+		
 		path->pop();
 	}
 	delete path;
