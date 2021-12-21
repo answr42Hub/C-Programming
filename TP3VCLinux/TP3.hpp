@@ -264,14 +264,7 @@ void onQuit() {
 	// TODO : Libérations
 	
 	while(path->size()) {
-		if(path->size() == 1) {
-			delete path->top();
-		}
-		else {
-			while(path->top()->getFolderCount() + path->top()->getNoteCount()) {
-				deleteElement((path->top()->getFolderCount() + path->top()->getNoteCount())-1);
-			}
-		}
+		delete path->top();
 		path->pop();
 	}
 	delete path;
